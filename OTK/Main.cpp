@@ -8,7 +8,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 	ChangeWindowMode(true);
 
 	//画面サイズを320×320に設定
-	SetGraphMode(320, 320, 16);
+	SetGraphMode(1920, 1080, 16);
 
 	if (DxLib_Init() == -1) return -1;
 
@@ -21,7 +21,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 	//初期化
 	Renderer renderer;
 	
-
+	int i = 0;
+	int x = 0;
 	//ここまで
 
 	//更新
@@ -31,13 +32,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 		ClearDrawScreen();
 		//これより下↓
 
-		renderer.Draw("a.png", 0, 0);
-
 		//これより↑
 		//バックバッファの内容を画面に表示
 		ScreenFlip();
 	}
-	renderer.~Renderer();
 	DxLib_End();
 	return 0;
 }

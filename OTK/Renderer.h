@@ -10,8 +10,9 @@ public://‚¨‚¢‚©‚¯•`‰æ(name,position,)
 	Renderer();
 	~Renderer();
     void Draw(const char* failname, float x, float y);
-	//void Draw(char* failname, float x, float y, float xx, float yy);
-	//void Rotate(char* failname, );
+	void Draw(const char* failname, float x, float y, float xx, float yy);
+	void Rotate(const char* failname, float x, float y, double angle, int flag);
+	void Rotate(const char* failname, float x, float y, float cx, float cy, float angle, int flag);
 private:
 
 };
