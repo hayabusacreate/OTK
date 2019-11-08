@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include "Renderer.h"
 #include<string>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine, int CmdShow)
@@ -17,6 +18,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 	//画面背景の色を設定する
 	SetBackgroundColor(255, 255, 255);
 
+	//初期化
+	Renderer renderer;
+	
+
+	//ここまで
+
 	//更新
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
@@ -24,13 +31,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 		ClearDrawScreen();
 		//これより下↓
 
-
+		renderer.Draw("a.png", 0, 0);
 
 		//これより↑
 		//バックバッファの内容を画面に表示
 		ScreenFlip();
 	}
-
+	renderer.~Renderer();
 	DxLib_End();
 	return 0;
 }
