@@ -6,13 +6,14 @@
 class CountDownTimer:public Timer
 {
 public:
-	CountDownTimer(const float second);
+	CountDownTimer();
 	~CountDownTimer();
 	void Init();
 	void Update();
 	bool IsTime();
 	void SetTime(const float second);
 	float Rate();
+	float Now();
 };
 
 

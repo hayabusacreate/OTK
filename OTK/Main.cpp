@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "Renderer.h"
+#include "CountDownTimer.h"
 #include<string>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine, int CmdShow)
@@ -8,7 +9,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 	ChangeWindowMode(true);
 
 	//画面サイズを320×320に設定
-	SetGraphMode(1920, 1080, 16);
+	SetGraphMode(500, 500, 16);
 
 	if (DxLib_Init() == -1) return -1;
 
@@ -20,7 +21,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 
 	//初期化
 	Renderer renderer;
-	
+	CountDownTimer timer;
+	timer.SetTime(10);
+	timer.Init();
 	int i = 0;
 	int x = 0;
 	//ここまで
@@ -31,7 +34,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR IpCmdLine
 		//画面をクリア
 		ClearDrawScreen();
 		//これより下↓
-
+		timer.Update();
+		DrawFormatString(250, 250, GetColor(0, 0, 0), "%f", timer.Now());
 		//これより↑
 		//バックバッファの内容を画面に表示
 		ScreenFlip();

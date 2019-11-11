@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include <cmath>
 
-CountDownTimer::CountDownTimer(const float second)
+CountDownTimer::CountDownTimer()
 {
 	Init();
 }
@@ -21,6 +21,7 @@ void CountDownTimer::Update()
 {
 	//int i = GetNowCount();
 	currentTime = std::fmaxf(currentTime - 1.0f, 0.0f);
+	//currentTime++;
 }
 
 bool CountDownTimer::IsTime()
@@ -30,10 +31,16 @@ bool CountDownTimer::IsTime()
 
 void CountDownTimer::SetTime(const float second)
 {
-	limitTime = 60.0f* second;
+	limitTime = 60.0f * second;
 }
+
 
 float CountDownTimer::Rate()
 {
 	return 1.0f - currentTime / limitTime;
+}
+
+float CountDownTimer::Now()
+{
+	return currentTime / 60.0f;
 }
