@@ -154,7 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CountDownTimer.cpp" />
+    <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
@@ -162,6 +166,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CountDownTimer.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2.h" />

@@ -11,6 +11,30 @@ Renderer::~Renderer()
 {
 }
 
+void Renderer::Draw(const char* failname, float x, float y)//‰æ‘œ•`‰æ(¶ãn“_)
+{
+	//‰æ‘œ‚Ì“Ç‚İ‚İ
+	int GHandle = LoadGraph(failname);
+
+	// “Ç‚İ‚±‚ñ‚¾ƒOƒ‰ƒtƒBƒbƒN‚ğ‰æ–Ê‚É•`‰æ
+	DrawGraph(x, y, GHandle, TRUE);
+
+	// “Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğíœ
+	DeleteGraph(GHandle);
+}
+
+void Renderer::Draw(const char * failname, float x, float y, float xx, float yy)//‰æ‘œ•`‰æ(‰æ‘œ‚ÌƒTƒCƒY•ÏX)
+{
+	//‰æ‘œ‚Ì“Ç‚İ‚İ
+	int GHandle = LoadGraph(failname);
+
+	// “Ç‚İ‚±‚ñ‚¾ƒOƒ‰ƒtƒBƒbƒN‚ğ‰æ–Ê‚É•`‰æ
+	DrawExtendGraph(x, y, xx, yy, GHandle, TRUE);
+
+	// “Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğíœ
+	DeleteGraph(GHandle);
+}
+
 void Renderer::Draw(const char* failname, Vector2 position)//‰æ‘œ•`‰æ(¶ãn“_)
 {
 	//‰æ‘œ‚Ì“Ç‚İ‚İ
@@ -30,6 +54,31 @@ void Renderer::Draw(const char * failname, Vector2 position, Vector2 scale)//‰æ‘
 
 	// “Ç‚İ‚±‚ñ‚¾ƒOƒ‰ƒtƒBƒbƒN‚ğ‰æ–Ê‚É•`‰æ
 	DrawExtendGraph(position.x, position.y, scale.x, scale.y, GHandle, TRUE);
+
+	// “Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğíœ
+	DeleteGraph(GHandle);
+}
+
+//flag true‚È‚ç”½“] false‚È‚ç‚»‚Ì‚Ü‚Ü
+void Renderer::Rotate(const char * failname, float x, float y, double angle, int flag)//‰æ‘œ‰ñ“]
+{
+	//‰æ‘œ‚Ì“Ç‚İ‚İ
+	int GHandle = LoadGraph(failname);
+	double ang = PI / 180 * angle;
+	// “Ç‚İ‚±‚ñ‚¾ƒOƒ‰ƒtƒBƒbƒN‚ğ‰ñ“]•`‰æ
+	DrawRotaGraph(x, y, 1.0f, ang, GHandle, TRUE, flag);
+
+	// “Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğíœ
+	DeleteGraph(GHandle);
+}
+
+void Renderer::Rotate(const char * failname, float x, float y, float cx, float cy, float angle, int flag)
+{
+	//‰æ‘œ‚Ì“Ç‚İ‚İ
+	int GHandle = LoadGraph(failname);
+	double ang = PI / 180 * angle;
+	// “Ç‚İ‚±‚ñ‚¾ƒOƒ‰ƒtƒBƒbƒN‚ğ‰ñ“]•`‰æ
+	DrawRotaGraph2(x, y, cx, cy, 1.0f, ang, GHandle, TRUE, flag);
 
 	// “Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğíœ
 	DeleteGraph(GHandle);

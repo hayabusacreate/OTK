@@ -1,0 +1,209 @@
+
+
+//敵生成テスト
+typedef struct Enemy
+{
+	float Gravity;
+	float JumpForce;
+	float Speed;
+	float scale;
+	Vector2 position;
+	float EnemyDownSpeed;
+	bool IsJumpFlag;
+
+	bool IsHitPlayer;
+
+	//初期化
+	Enemy()
+		:Gravity(0.3f),
+		JumpForce(9.0f),
+		Speed(5.0f),
+		scale(30),
+		position(320.0f, 240.0f),
+		EnemyDownSpeed(0.0f),
+		IsJumpFlag(false),
+
+
+		IsHitPlayer(false)
+	{
+
+	}
+
+	//プレイヤーの移動
+	void EnemyMove();
+	//プレイヤーの描画
+	void EnemyRenderer();
+};
+
+
+
+
+
+//Renderer生成
+Renderer renderer;
+
+bool IsActionFlag = false;
+
+int FrameStartTime;        // ６０ＦＰＳ固定用、時間保存用変数
+
+	// キャラクタをマップとの当たり判定を考慮しながら移動する関数
+int CheckMapMove(float *X, float *Y, float *DownSP,
+	float MoveX, float MoveY, float Size, bool *JumpFlag);
+
+// アクションサンプルプログラムメイン関数
+int ActionMain(void);
+
+
+
+
+// キャラクタをマップとの当たり判定を考慮しながら移動する
+int CheckMapMove(float * X, float * Y, float * DownSP, float MoveX, float MoveY, float Size, bool * JumpFlag)
+{
+	float Dummy = 0.0f;
+	float hsize;
+
+	// キャラクタの左上、右上、左下、右下部分に当たり判定のある
+	// マップに衝突しているか調べ、衝突していたら補正する
+	// 半分のサイズを算出
+	hsize = Size * 0.5f;
+
+	// 先ず上下移動成分だけでチェック
+	{
+		// 左下のチェック、もしブロックの上辺に着いていたら落下を止める
+		if (map.MapHitCheck(*X - hsize, *Y + hsize, &Dummy, &MoveY) == 3)
+		{
+			*DownSP = 0.0F;
+		}
+
+		// 右下のチェック、もしブロックの上辺に着いていたら落下を止める
+		if (map.MapHitCheck(*X + hsize, *Y + hsize, &Dummy, &MoveY) == 3)
+		{
+			*DownSP = 0.0F;
+		}
+
+		// 左上のチェック、もしブロックの下辺に当たっていたら落下させる
+		if (map.MapHitCheck(*X - hsize, *Y - hsize, &Dummy, &MoveY) == 4)
+		{
+			*DownSP *= -1.0F;
+		}
+
+		// 右上のチェック、もしブロックの下辺に当たっていたら落下させる
+		if (map.MapHitCheck(*X + hsize, *Y - hsize, &Dummy, &MoveY) == 4)
+		{
+			*DownSP *= -1.0F;
+		}
+
+		// 上下移動成分を加算
+		*Y += MoveY;
+	}
+
+	// 後に左右移動成分だけでチェック
+	{
+		// 左下のチェック
+		map.MapHitCheck(*X - hsize, *Y + hsize, &MoveX, &Dummy);
+
+		// 右下のチェック
+		map.MapHitCheck(*X + hsize, *Y + hsize, &MoveX, &Dummy);
+
+		// 左上のチェック
+		map.MapHitCheck(*X - hsize, *Y - hsize, &MoveX, &Dummy);
+
+		// 右上のチェック
+		map.MapHitCheck(*X + hsize, *Y - hsize, &MoveX, &Dummy);
+
+		// 左右移動成分を加算
+		*X += MoveX;
+	}
+
+	// 接地判定
+	{
+		// キャラクタの左下と右下の1ピクセル下にブロックがあるか?
+		if (map.GetMapChip(*X - hsize, *Y + hsize + 1.0f) == 0 &&
+			map.GetMapChip(*X + hsize, *Y + hsize + 1.0f) == 0)
+		{
+			//無かったらジャンプ中にする
+			*JumpFlag = true;
+		}
+		else
+		{
+			// あったらfalse
+			*JumpFlag = false;
+		}
+	}
+
+	// 終了
+	return 0;
+}
+
+
+void Enemy::EnemyMove()
+{
+	float MoveX, MoveY;
+
+	// 移動量の初期化
+	MoveX = 0.0f;
+	MoveY = 0.0f;
+
+	// 落下処理;
+	enemy.EnemyDownSpeed += enemy.Gravity;
+
+	// 落下速度を移動量に加える
+	MoveY = enemy.EnemyDownSpeed;
+
+	// 移動量に基づいてキャラクタの座標を移動
+	CheckMapMove(&enemy.position.x, &enemy.position.y, &enemy.EnemyDownSpeed, MoveX, MoveY, enemy.scale, &enemy.IsJumpFlag);
+}
+
+void Enemy::EnemyRenderer()
+{
+	//int red;
+	//if (enemy.IsHitPlayer)
+	//{
+	//	red = 255;
+	//}
+	//else
+	//{
+	//	red = 0;
+	//}
+
+	//// キャラクタの描画
+	//DrawBox((int)(enemy.position.x - enemy.scale * 0.5F), (int)(enemy.position.y - enemy.scale * 0.5F),
+	//	(int)(enemy.position.x + enemy.scale * 0.5F) + 1, (int)(enemy.position.y + enemy.scale * 0.5F) + 1,
+	//	GetColor(red, 0, 255), TRUE);
+
+	Vector2 RectPos(enemy.position.x - enemy.scale * 0.5f, enemy.position.y - enemy.scale * 0.5f);
+	renderer.Draw("block.png", RectPos);
+}
+
+
+
+/*
+		//矩形の当たり判定
+		auto dx = abs((player.position.x + player.scale / 2.f) - (enemy.position.x + enemy.scale / 2));
+		auto dy = abs((player.position.y + player.scale / 2.f) - (enemy.position.y + enemy.scale / 2));
+
+		if (dx < (player.scale + enemy.scale) / 2 && dy < (player.scale + enemy.scale) / 2)
+		{
+			DrawString(0, 0, "当たった!", GetColor(255, 0, 0));
+		}
+
+		//枠内に敵がいたとき
+		if (enemy.IsHitPlayer)
+		{
+			//敵の位置を取得
+			//            b
+			Vector2 epos(enemy.position.x, enemy.position.y);
+			//            a
+			Vector2 ppos(player.position.x, player.position.y);
+
+			//お互いの中心を求める
+			auto x = abs((ppos.x + player.scale / 2.f) - (epos.x + enemy.scale / 2));
+			auto y = abs((ppos.y + player.scale / 2.f) - (epos.y + enemy.scale / 2));
+
+			float test(sqrt(x * x + y * y));
+
+			ppos = epos;
+		}
+
+		*/
+		// 画面の更新
