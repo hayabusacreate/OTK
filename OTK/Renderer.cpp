@@ -9,6 +9,7 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
+	InitGraph();
 }
 
 void Renderer::Draw(const char* failname, float x, float y)//‰æ‘œ•`‰æ(¶ãn“_)

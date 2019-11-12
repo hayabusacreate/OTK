@@ -115,7 +115,27 @@ void Player::Hit(int hit)
 	// 半分のサイズを算出
 	//hsize = Size * 0.5f;
 	//当たり判定の処理
-	Move();
+	if (hit == 0)
+	{
+		Move();
+	}
+	else if (hit == 1)
+	{
+		//左辺に壁があるときのプレイヤーの処理
+	}
+	else if (hit == 2)
+	{
+		//右辺に壁があるときのプレイヤーの処理
+	}
+	else if (hit == 3)
+	{
+		//上辺に壁があるときのプレイヤーの処理
+	}
+	else
+	{
+		Move();
+	}
+	
 }
 
 float Player::ReturnPosX()

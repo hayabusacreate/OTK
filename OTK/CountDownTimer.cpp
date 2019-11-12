@@ -1,6 +1,5 @@
 #include "Timer.h"
 #include "CountDownTimer.h"
-#include "DxLib.h"
 #include <cmath>
 
 CountDownTimer::CountDownTimer()

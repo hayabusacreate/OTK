@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "GamePlay.h"
+#include "Effect.h"
 
 #define SCREEN_WIDTH     (640)                          // 画面横幅
 #define SCREEN_HEIGHT    (480)                          // 画面縦幅
@@ -30,6 +31,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	GamePlay game;
 	game.Init();
+	Effect effect;
+	bool a = false;
 
 	// メインループ開始、ＥＳＣキーで外に出る
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
@@ -43,9 +46,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// 現在のカウント値を保存
 		FrameStartTime = GetNowCount();
 
-		game.Update();
-		game.Draw();
+		//game.Update();
+		//game.Draw();
+			effect.Trigger("giza.png", Vector2(50, 50), 10.0f);
 		
+
 		ScreenFlip();
 	}
 
