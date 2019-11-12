@@ -158,6 +158,7 @@
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CountDownTimer.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Renderer.h" />
