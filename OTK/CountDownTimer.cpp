@@ -32,6 +32,7 @@ bool CountDownTimer::IsTime()
 void CountDownTimer::SetTime(const float second)
 {
 	limitTime = 60.0f * second;
+	Init();
 }
 
 
