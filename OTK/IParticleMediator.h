@@ -5,5 +5,5 @@
 
 __interface IParticleMediator
 {
-	Particle generate(const char* filename);
+	//Particle generate(const char* filename);
 };
