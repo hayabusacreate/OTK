@@ -2,6 +2,8 @@
 #include "GamePlay.h"
 #include "Effect.h"
 
+
+
 #define SCREEN_WIDTH     (640)                          // 画面横幅
 #define SCREEN_HEIGHT    (480)                          // 画面縦幅
 #define CHIP_SIZE        (32)                           // 一つのチップのサイズ
@@ -48,7 +50,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		//game.Update();
 		//game.Draw();
-			effect.Trigger("giza.png", Vector2(50, 50), 10.0f);
+		effect.Test("giza.png", Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);//particle.jpg
 		
 
 		ScreenFlip();

@@ -5,11 +5,15 @@
 #include "Vector2.h"
 #include <string>
 
+#include <iostream>
+#include <map>
+
 class Renderer
 {
 public://‚¨‚¢‚©‚¯•`‰æ(name,position,)
 	Renderer();
 	~Renderer();
+	void LoadTexture(const char* failname);
 	void Draw(const char* failname, float x, float y);
 	void Draw(const char* failname, float x, float y, float xx, float yy);
 	void Draw(const char* failname, Vector2 position);
@@ -19,7 +23,7 @@ public://‚¨‚¢‚©‚¯•`‰æ(name,position,)
 	void Rotate(const char* failname, Vector2 position, double angle, int flag);
 	void Rotate(const char* failname, Vector2 position, Vector2 scale, float angle, int flag);
 private:
-
+	std::map<std::string, int> texture;
 };
 
 
