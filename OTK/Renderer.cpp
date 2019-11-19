@@ -115,3 +115,8 @@ void Renderer::Rotate(const char * failname, Vector2 position, Vector2 scale, fl
 	// 読み込んだ画像のグラフィックハンドルを削除
 	//DeleteGraph(GHandle);
 }
+
+void Renderer::MotionDraw(const char * failname, Vector2 position, Rectangles* rect)
+{
+	DrawRectGraph(position.x, position.y, rect->Rx(), rect->Ry(), rect->Rwidth(), rect->Rheight(), texture[failname], TRUE, FALSE);
+}

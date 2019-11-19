@@ -3,6 +3,7 @@
 
 #include "DxLib.h"
 #include "Vector2.h"
+#include "Rectangles.h"
 #include <string>
 
 #include <iostream>
@@ -22,6 +23,7 @@ public://‚¨‚¢‚©‚¯•`‰æ(name,position,)
 	void Rotate(const char* failname, float x, float y, float cx, float cy, float angle, int flag);
 	void Rotate(const char* failname, Vector2 position, double angle, int flag);
 	void Rotate(const char* failname, Vector2 position, Vector2 scale, float angle, int flag);
+	void MotionDraw(const char* failname, Vector2 position, Rectangles* rect);
 private:
 	std::map<std::string, int> texture;
 };

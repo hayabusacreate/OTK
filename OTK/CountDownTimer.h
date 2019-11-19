@@ -7,6 +7,7 @@ class CountDownTimer:public Timer
 {
 public:
 	CountDownTimer();
+	CountDownTimer(float t);
 	~CountDownTimer();
 	void Init();
 	void Update();

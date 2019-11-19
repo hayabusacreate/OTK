@@ -3,17 +3,20 @@
 #include "CountDownTimer.h"
 #include "Vector2.h"
 #include "Renderer.h"
+#include "Motion.h"
+#include "Rectangles.h"
 
 #include "DxLib.h"
 
 Renderer renderer;
 CountDownTimer timer;
+Motion motion;
 
 Effect::Effect()
 {
 	flag = false;
 	renderer.LoadTexture("ring.png");
-	
+	renderer.LoadTexture("explosion.jpg");
 }
 
 Effect::~Effect()
@@ -31,7 +34,7 @@ void Effect::Afterimage(Vector2& position, float t)//Žc‘œ
 
 void Effect::Explosion(Vector2  position, float t)//”š”­ring.png
 {
-	if (!flag)
+	/*if (!flag)
 	{
 		timer.SetTime(10);
 		flag = true;
@@ -41,7 +44,23 @@ void Effect::Explosion(Vector2  position, float t)//”š”­ring.png
 	renderer.Draw("ring.png", position);
 	renderer.Draw("ring.png", position.x, position.y + timer.Now() * 20);
 	SetDrawBright(255, 255, 255);
-	renderer.Draw("ring.png", timer.Rate() * 100 + position.x, position.y);
+	renderer.Draw("ring.png", timer.Rate() * 100 + position.x, position.y);*/
+
+
+	//explosion.jpg
+	
+	if (!flag)
+	{
+		for (int i = 0; i < 12; i++)
+		{
+			motion.Add(i,&Rectangles(120 * (i % 3), 120 * (i % 3), 120, 120));
+		}
+		motion.Init(Range(0, 12), CountDownTimer(t));
+		flag = true;
+	}
+	motion.Update();
+	//DrawRectGraph(position.x, position.y, 0, 0, 1, 1;
+	renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());
 }
 
 void Effect::Trajectory(Vector2& position, float t)//‹OÕ//bou.png
@@ -63,25 +82,5 @@ void Effect::End(Vector2& position, float t)//ŽžŠÔ’âŽ~I—¹//hosi.png
 
 void Effect::Test(const char * filename, Vector2 position, float t)
 {
-	if (!flag)
-	{
-		flag = true;
-		timer.SetTime(t);
-	}
-	timer.Update();
-	//int GrHandle = LoadGraph(filename);
-	//‹P“x‚ÌÝ’è’l‚ðÔ‚É•ÏX
-
-	SetDrawBright(255, 0, 0);
-	//DrawRotaGraph(position.x, position.y, 1.0, t, GraphicHandle, TRUE);
-	//renderer.Rotate(filename, position, -timer.Now() * 200, TRUE);
-	//renderer.Rotate(filename, position, -timer.Now() * 100, TRUE);
-	int GHandle = LoadGraph(filename);
-	DrawRotaGraph3(position.x, position.y, 50, 50, 5.0f, 5.0f, -timer.Now() * 2, GHandle, TRUE);
-	//Œ³‚É–ß‚·
-	SetDrawBright(255, 255, 255);
-	if (timer.IsTime())
-	{
-		flag = false;
-	}
+	
 }

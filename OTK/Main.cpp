@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//game.Update();
 		//game.Draw();
 		//effect.Test("giza.png", Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);//particle.jpg
-		//effect.Explosion(Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);
+		effect.Explosion(Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 0.2f);
 		//effect.BloodSplash(, 10.0f);
 
 		ScreenFlip();

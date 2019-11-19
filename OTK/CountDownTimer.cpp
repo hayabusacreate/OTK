@@ -7,6 +7,12 @@ CountDownTimer::CountDownTimer()
 	Init();
 }
 
+CountDownTimer::CountDownTimer(float t)
+{
+	SetTime(t);
+	Init();
+}
+
 CountDownTimer::~CountDownTimer()
 {
 }
