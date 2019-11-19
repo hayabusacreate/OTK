@@ -21,6 +21,7 @@ void PlayerActionTime::Initialize()
 
 	key[256];
 	pad = 0;
+	InputFlag = 0;
 }
 
 void PlayerActionTime::Update(bool ActionFlag, int EnemyDeadScore)
@@ -56,10 +57,20 @@ void PlayerActionTime::Update(bool ActionFlag, int EnemyDeadScore)
 	else                   //してる
 	{
 		//スペースが押されたら（アクションがプレイヤーで実行されたら）
-		if (key[KEY_INPUT_SPACE] == 1 ||
-			pad & PAD_INPUT_B)
+		if (/*key[KEY_INPUT_SPACE] == 1 || */pad & PAD_INPUT_B)
 		{
-			expansionX -= 10;
+			//前フレームで押していなければ
+			if (InputFlag == 0)
+			{
+				expansionX -= 10;
+			}
+			//前フレームでボタンが押されたかをtrueにする
+			InputFlag = 1;
+		}
+		else
+		{
+			//ボタンが押されていない場合は、falseにする
+			InputFlag = 0;
 		}
 
 		expansionX += EnemyDeadScore;
