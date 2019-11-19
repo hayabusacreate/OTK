@@ -56,8 +56,9 @@ private:
 	int img;
 
 
-	int anime[6];         //プレイヤーの画像枚数配列
+	int anime[88];         //プレイヤーの画像枚数配列
 	int ImgIndex;         //描画する画像の番号
+	int AnimNum;          //アニメーション番号
 	int count;            //カウント
 	Map _map;             //マップ情報
 

@@ -25,11 +25,12 @@ void Player::Initialize()
 	AttackSpeed = 30;
 	IsJumpFlag = false;
 
-	anime[11] = { 0 };
+	anime[88];
 	ImgIndex = 0;
 	count = 0;
+	AnimNum = 0;
 	//画像の読み込み
-	img = LoadDivGraph("saiba-rennbann2.png", 11, 11, 8, 64, 64, anime);
+	img = LoadDivGraph("saiba-rennbann2.png", 88, 11, 8, 64, 64, anime);
 
 
 	ActionFlag = false;
@@ -97,22 +98,27 @@ void Player::Move()
 	Vector2 velocity;
 
 	velocity = Vector2(0, 0);
-
 	//左移動
 	if (/*key[KEY_INPUT_LEFT] == 2 ||*/
 		(pad & PAD_INPUT_LEFT))
 	{
 		velocity.x -= MoveSpeed;
-	}
-
+		AnimNum = 3;
+	}else
 	//右移動
 	if (/*key[KEY_INPUT_RIGHT] == 2 ||*/
 		(pad & PAD_INPUT_RIGHT))
 	{
 		velocity.x += MoveSpeed;
+		AnimNum = 2;
 	}
-
-
+	else if (IsJumpFlag == false)
+	{
+		if (AnimNum == 3 || AnimNum == 5 || AnimNum == 7)
+			AnimNum = 1;
+		if (AnimNum == 2 || AnimNum == 4 || AnimNum == 6)
+			AnimNum = 0;
+	}
 	// 着地しているかつスペースが押されたとき
 	if (IsJumpFlag == false)
 	{
@@ -123,6 +129,13 @@ void Player::Move()
 			{
 				PlayerDownSpeed -= JumpForce;
 				IsJumpFlag = true;
+				if (AnimNum == 0 || AnimNum == 2 || AnimNum == 6)
+					AnimNum = 4;
+					count = 0;
+				
+				if (AnimNum == 1 || AnimNum == 3 || AnimNum == 7)
+					AnimNum = 5;
+				
 			}
 			//前フレームでボタンが押されたかをtrueにする
 			InputFlag = 1;
@@ -219,7 +232,6 @@ void Player::Action(bool IsActionFlag)
 		{
 			velocity.x += AttackSpeed * cos(radian);
 			velocity.y += AttackSpeed * sin(radian);
-
 			StartJoypadVibration(DX_INPUT_PAD1, 500,1);
 		}
 
@@ -252,13 +264,46 @@ void Player::Draw()
 			GetColor(255, 255, 0), FALSE);
 	}
 	//表示する画像の番号を変更
-	ImgIndex = count % 36;
-	ImgIndex /= 6;//中に6が入るように設定する
+	ImgIndex = count % 121;
+	ImgIndex /= 11;//中に6が入るように設定する
 
 	//アニメーション描画
-	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
-	//カウントを増やす
-	++count;
+	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex+(11*AnimNum)], true);
+
+	if (ActionCount != 1)
+	{
+		//カウントを増やす
+		++count;
+		++count;
+	}
+	if (ActionCount == 2)
+	{
+		//カウントを増やす
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		++count;
+		if (AnimNum != 6)
+		{
+			count = 0;
+		}
+		else if(count>=11)
+		{
+			count==12;
+		}
+		if(AnimNum==0|| AnimNum == 2 || AnimNum == 4)
+		AnimNum = 6;
+		if (AnimNum == 1 || AnimNum == 3 || AnimNum == 5)
+			AnimNum = 7;
+	}
 
 }
 

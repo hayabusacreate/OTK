@@ -9,7 +9,7 @@
 #include "DxLib.h"
 
 Map map;
-Player player(Vector2(28, 5), map);
+Player player(Vector2(10, 5), map);
 Enemy enemy(Vector2(12, 10), map);
 PlayerActionTime pActiont;
 GoalBlock goalblock(Vector2(14, 8));
