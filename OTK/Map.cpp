@@ -1,8 +1,6 @@
 #include "Map.h"
 #include "DxLib.h"
 
-#define CHIP_SIZE 30
-
 Map::Map()
 {
 
@@ -10,6 +8,12 @@ Map::Map()
 
 Map::~Map()
 {
+	DeleteGraph(img);
+}
+
+void Map::Initialize()
+{
+	img = LoadDivGraph("testblock.png", 3, 3, 1, 32, 32, chip);
 }
 
 int Map::GetMapChip(float x, float y)
@@ -31,30 +35,17 @@ void Map::Draw()
 			DrawGraph(x * 32, y * 32, chip[MapData[y][x]], FALSE);
 		}
 	}
-	//for (int i = 0; i < MAP_HEIGHT; i++)
-	//{
-	//	for (int j = 0; j < MAP_WIDTH; j++)
-	//	{
-	//		// １は当たり判定チップを表しているので１のところだけ描画
-	//		if (map.MapData[i][j] == 1)
-	//		{
-	//			DrawBox(j * CHIP_SIZE, i * CHIP_SIZE,
-	//				j * CHIP_SIZE + CHIP_SIZE, i * CHIP_SIZE + CHIP_SIZE,
-	//				GetColor(255, 255, 255), TRUE);
-	//		}
-	//	}
-	//}
 }
 
 // マップとの当たり判定( 戻り値 0:当たらなかった  1:左辺に当たった  2:右辺に当たった
 //                                                3:上辺に当たった  4:下辺に当たった
-int Map::MapHitCheck(float x, float y, float  MoveX, float  MoveY)//chara.X,chara.Y,0,自由落下
+int Map::MapHitCheck(float x, float y, float * MoveX, float * MoveY)
 {
-	float afX=0, afY=0;
+	float afX = 0, afY = 0;
 
 	// 移動量を足す
-	afX = x + MoveX;
-	afY = y + MoveY;
+	afX = x + *MoveX;
+	afY = y + *MoveY;
 	//ブロックにぶつかっていたら
 	if (GetMapChip(afX, afY) == 1 ||
 		GetMapChip(afX, afY) == 2)
@@ -69,40 +60,40 @@ int Map::MapHitCheck(float x, float y, float  MoveX, float  MoveY)//chara.X,char
 		bby = (float)((int)afY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の Y 座標
 
 		// 左辺に当たっていた場合
-		if (MoveX > 0.0f)
+		if (*MoveX > 0.0f)
 		{
 			// 移動量を補正する
-			MoveX = blx - x - 1.0f;
+			*MoveX = blx - x - 1.0f;
 
 			// 左辺に当たったと返す
 			return 1;
 		}
 
 		// 右辺に当たっていた場合
-		if (MoveX < 0.0f)
+		if (*MoveX < 0.0f)
 		{
 			// 移動量を補正する
-			MoveX = brx - x + 1.0f;
+			*MoveX = brx - x + 1.0f;
 
 			// 右辺に当たったと返す
 			return 2;
 		}
 
 		// 上辺に当たっていた場合
-		if (MoveY > 0.0f)
+		if (*MoveY > 0.0f)
 		{
 			// 移動量を補正する
-			MoveY = bty - y - 1.0f;
+			*MoveY = bty - y - 1.0f;
 
 			// 上辺に当たったと返す
 			return 3;
 		}
 
 		// 下辺に当たっていた場合
-		if (MoveY < 0.0f)
+		if (*MoveY < 0.0f)
 		{
 			// 移動量を補正する
-			MoveY = bby - y + 1.0f;
+			*MoveY = bby - y + 1.0f;
 
 			// 下辺に当たったと返す
 			return 4;
