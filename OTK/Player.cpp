@@ -5,7 +5,7 @@ Input input;
 
 //コンストラクタ
 Player::Player(Vector2 pos, Map map)
-	:_position(pos.x * 32, pos.y * 32), _scale(Vector2(30, 30))
+	:_position(pos.x * 60, pos.y * 60), _scale(Vector2(60, 60))
 {
 	this->_map = map;
 }
@@ -20,15 +20,16 @@ void Player::Initialize()
 {
 	Gravity = 0.3f;
 	JumpForce = 9.0f;
-	MoveSpeed = 5.0f;
+	MoveSpeed = 3.0f;
 	PlayerDownSpeed = 0.0f;
+	AttackSpeed = 30;
 	IsJumpFlag = false;
 
-	anime[6] = { 0 };
+	anime[11] = { 0 };
 	ImgIndex = 0;
 	count = 0;
 	//画像の読み込み
-	img = LoadDivGraph("puddle.png", 6, 6, 1, 32, 32, anime);
+	img = LoadDivGraph("saiba-rennbann2.png", 11, 11, 8, 64, 64, anime);
 
 
 	ActionFlag = false;
@@ -169,8 +170,8 @@ void Player::Action(bool IsActionFlag)
 
 		else if (ActionCount == 2)
 		{
-			velocity.x += MoveSpeed * cos(radian);
-			velocity.y += MoveSpeed * sin(radian);
+			velocity.x += AttackSpeed * cos(radian);
+			velocity.y += AttackSpeed * sin(radian);
 
 			StartJoypadVibration(DX_INPUT_PAD1, 500,1);
 		}

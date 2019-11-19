@@ -4,7 +4,7 @@
 //コンストラクタ
 //位置:マップ
 Enemy::Enemy(Vector2 pos, Map map)
-	:_position(pos.x * 32, pos.y * 32), _scale(Vector2(30, 30))
+	:_position(pos.x * 64, pos.y * 64), _scale(Vector2(60, 60))
 {
 	this->_map = map;
 	Player player(Vector2(11, 10), _map);

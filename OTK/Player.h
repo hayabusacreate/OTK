@@ -50,6 +50,7 @@ private:
 	float Gravity;        // キャラに掛かる重力加速度
 	float JumpForce;      // キャラのジャンプ力
 	float MoveSpeed;      // キャラの移動スピード
+	float AttackSpeed;
 	float PlayerDownSpeed;//プレイヤーの落下速度
 	bool IsJumpFlag;      //ジャンプしたかどうか?
 	int img;
