@@ -39,5 +39,5 @@ private:
 	bool IsActionFlag;//アクションができる状態か？
 
 	int key[256];
-	int pad;
+	int pad, InputFlag;
 };

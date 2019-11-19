@@ -70,4 +70,6 @@ private:
 	int pad;          // 0:入力されていない 1:入力された瞬間 2:入力されている
 
 	int InputX, InputY;
+
+	int InputFlag; //１フレ前にボタンがおされたら
 };

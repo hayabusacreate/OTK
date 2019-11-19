@@ -41,6 +41,8 @@ void Player::Initialize()
 
 	InputX = 0;
 	InputY = 0;
+
+	InputFlag = 0;
 }
 
 void Player::Update()
@@ -50,6 +52,8 @@ void Player::Update()
 		Move();
 	}
 
+	pad = GetJoypadInputState(DX_INPUT_PAD1);
+
 	InputKey_PAD();
 }
 
@@ -58,7 +62,6 @@ void Player::InputKey_PAD()
 {
 	static char pushkey[256];
 	GetHitKeyStateAll(pushkey);
-	pad = GetJoypadInputState(DX_INPUT_PAD1);
 	for (int i = 0; i < 256; i++)
 	{
 		//キーがnull出ないか?
@@ -96,25 +99,39 @@ void Player::Move()
 	velocity = Vector2(0, 0);
 
 	//左移動
-	if (key[KEY_INPUT_LEFT] == 2 ||
+	if (/*key[KEY_INPUT_LEFT] == 2 ||*/
 		(pad & PAD_INPUT_LEFT))
 	{
 		velocity.x -= MoveSpeed;
 	}
 
 	//右移動
-	if (key[KEY_INPUT_RIGHT] == 2 ||
+	if (/*key[KEY_INPUT_RIGHT] == 2 ||*/
 		(pad & PAD_INPUT_RIGHT))
 	{
 		velocity.x += MoveSpeed;
 	}
 
+
 	// 着地しているかつスペースが押されたとき
-	if (IsJumpFlag == false && (key[KEY_INPUT_SPACE] == 1) ||
-		IsJumpFlag == false && (pad & PAD_INPUT_B))
+	if (IsJumpFlag == false)
 	{
-		PlayerDownSpeed -= JumpForce;
-		IsJumpFlag = true;
+		if (/*(key[KEY_INPUT_SPACE] == 1) || */(pad & PAD_INPUT_B))
+		{
+			//前フレームで押していなければ
+			if (InputFlag == 0)
+			{
+				PlayerDownSpeed -= JumpForce;
+				IsJumpFlag = true;
+			}
+			//前フレームでボタンが押されたかをtrueにする
+			InputFlag = 1;
+		}
+		else
+		{
+			//ボタンが押されていない場合は、falseにする
+			InputFlag = 0;
+		}
 	}
 
 	// 落下処理;
@@ -143,31 +160,61 @@ void Player::Action(bool IsActionFlag)
 	//ゲージが0より大きいとき
 	if (IsActionFlag == true)
 	{
-		//通常状態&zキーが押されたら
-		if (ActionCount == 0 && key[KEY_INPUT_Z] == 1 ||
-			ActionCount == 0 && (pad & PAD_INPUT_A))
+		//通常状態
+		if (ActionCount == 0)
 		{
-			ActionCount = 1;
+			//&zキーが押されたら
+			if (/*key[KEY_INPUT_Z] == 1 || */(pad & PAD_INPUT_A))
+			{
+				//前フレームで押していなければ
+				if (InputFlag == 0)
+				{
+					ActionCount = 1;
+				}
+				//前フレームでボタンが押されたかをtrueにする
+				InputFlag = 1;
+			}
+			else
+			{
+				//ボタンが押されていない場合は、falseにする
+				InputFlag = 0;
+			}
 		}
-
+		//方向入力状態
 		else if (ActionCount == 1)
 		{
+			//ジョイパッドのスティック入力取得
 			GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
 
 			radian = atan2((float)InputY - _position.y, (float)InputX - _position.x);
 
-			if (key[KEY_INPUT_Z] == 1 ||
-				pad & PAD_INPUT_A)
+			if (/*key[KEY_INPUT_Z] == 1 || */pad & PAD_INPUT_A)
 			{
-				ActionCount = 0;
+				//前フレームで押していなければ
+				if (InputFlag == 0)
+				{
+					ActionCount = 0;
+				}
+				//前フレームでボタンが押されたかをtrueにする
+				InputFlag = 1;
 			}
-			else if (key[KEY_INPUT_SPACE] == 1 ||
-				pad & PAD_INPUT_B)
+			else if (/*key[KEY_INPUT_SPACE] == 1 || */pad & PAD_INPUT_B)
 			{
-				ActionCount = 2;
+				//前フレームで押していなければ
+				if (InputFlag == 0)
+				{
+					ActionCount = 2;
+				}
+				//前フレームでボタンが押されたかをtrueにする
+				InputFlag = 1;
+			}
+			else
+			{
+				//ボタンが押されていない場合は、falseにする
+				InputFlag = 0;
 			}
 		}
-
+		//移動
 		else if (ActionCount == 2)
 		{
 			velocity.x += AttackSpeed * cos(radian);
@@ -175,56 +222,6 @@ void Player::Action(bool IsActionFlag)
 
 			StartJoypadVibration(DX_INPUT_PAD1, 500,1);
 		}
-
-#pragma region ターゲットがいるときのアクション
-		//else if (ActionCount == 1)
-		//{
-		//	//敵と自分の当たり判定
-		//	auto dx = abs((EnemyPos.x + EnemySca.x * 0.5f) - (_position.x + _scale.x * 0.5f));
-		//	auto dy = abs((EnemyPos.y + EnemySca.y * 0.5f) - (_position.y + _scale.y * 0.5f));
-		//	//索敵範囲(*2)に当たっているか?
-		//	if (dx < (EnemySca.x + _scale.x * 2) && dy < (EnemySca.y + _scale.y * 2))
-		//	{
-		//		DrawString(320, 0, "当たった!", GetColor(0, 255, 0));
-		//		//移動カウント更新
-		//		ActionCount = 2;
-		//	}
-		//	//当たっていなけらば元に戻す
-		//	else
-		//	{
-		//		ActionCount = 0;
-		//	}
-
-		//	//xx = 500, yy = -500;
-
-		//	//GetJoypadAnalogInput(&x, &y, DX_INPUT_KEY_PAD1);
-
-		//	ActionCount = 2;
-		//}
-
-		////当たっていたら敵の座標を計算
-		//else if (ActionCount == 2)
-		//{
-		//	radian = atan2(EnemyPos.y - _position.y, EnemyPos.x - _position.x);
-		//	//radian = atan2((float)yy - _position.y, (float)xx - _position.x);
-		//	if (key[KEY_INPUT_Z] == 1 ||
-		//		pad & PAD_INPUT_A)
-		//	{
-		//		ActionCount = 0;
-		//	}
-		//	else if (key[KEY_INPUT_SPACE] == 1 ||
-		//		pad & PAD_INPUT_B)
-		//	{
-		//		ActionCount = 3;
-		//	}
-		//}
-
-		//else if (ActionCount == 3)
-		//{
-		//	velocity.x += MoveSpeed * cos(radian);
-		//	velocity.y += MoveSpeed * sin(radian);
-		//}
-#pragma endregion
 
 		//移動
 		CheckMapMove(_position, &PlayerDownSpeed, velocity, _scale, &IsJumpFlag);
