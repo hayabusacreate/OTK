@@ -60,7 +60,7 @@ void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 	}
 	motion.Update();
 	//DrawRectGraph(position.x, position.y, 0, 0, 1, 1;
-	renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());
+	/*renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());*/
 }
 
 void Effect::Trajectory(Vector2& position, float t)//ãOê’//bou.png
