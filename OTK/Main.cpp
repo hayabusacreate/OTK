@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "GamePlay.h"
 #include "Effect.h"
+#include "Renderer.h"
 
 
 
@@ -9,7 +10,6 @@
 #define CHIP_SIZE        (32)                           // 一つのチップのサイズ
 #define MAP_WIDTH        (SCREEN_WIDTH / CHIP_SIZE)     // マップの横幅
 #define MAP_HEIGHT       (SCREEN_HEIGHT / CHIP_SIZE)    // マップの縦幅
-
 
 
 
@@ -31,10 +31,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// ６０ＦＰＳ固定用、時間保存用変数を現在のカウント値にセット
 	int FrameStartTime = GetNowCount();
 
+	Renderer renderer;
+	renderer.LoadTexture("ring.png");
+
 	GamePlay game;
 	game.Init();
 	Effect effect;
 	bool a = false;
+
+	
 
 	// メインループ開始、ＥＳＣキーで外に出る
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
@@ -50,8 +55,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		//game.Update();
 		//game.Draw();
-		effect.Test("giza.png", Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);//particle.jpg
-		
+		//effect.Test("giza.png", Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);//particle.jpg
+		//effect.Explosion(Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 10.0f);
+		//effect.BloodSplash(, 10.0f);
 
 		ScreenFlip();
 	}

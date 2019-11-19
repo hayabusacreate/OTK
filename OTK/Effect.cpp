@@ -9,39 +9,55 @@
 Renderer renderer;
 CountDownTimer timer;
 
-
 Effect::Effect()
 {
 	flag = false;
+	renderer.LoadTexture("ring.png");
+	
 }
 
 Effect::~Effect()
 {
 }
 
-void Effect::BloodSplash(Vector2 position, float t)//ŒŒ‚µ‚Ô‚«//maru.png
+void Effect::BloodSplash(Vector2& position, float t)//ŒŒ‚µ‚Ô‚«//maru.png
 {
 
 }
 
-void Effect::Afterimage(Vector2 position, float t)//c‘œ
+void Effect::Afterimage(Vector2& position, float t)//c‘œ
 {
 }
 
-void Effect::Trajectory(Vector2 position, float t)//‹OÕ//bou.png
+void Effect::Explosion(Vector2  position, float t)//”š”­ring.png
+{
+	if (!flag)
+	{
+		timer.SetTime(10);
+		flag = true;
+	}
+	timer.Update();
+	SetDrawBright(timer.Now() / 10 * 255, 0, 0);
+	renderer.Draw("ring.png", position);
+	renderer.Draw("ring.png", position.x, position.y + timer.Now() * 20);
+	SetDrawBright(255, 255, 255);
+	renderer.Draw("ring.png", timer.Rate() * 100 + position.x, position.y);
+}
+
+void Effect::Trajectory(Vector2& position, float t)//‹OÕ//bou.png
 {
 }
 
-void Effect::Slashing(Vector2 position, float t)//aŒ‚
+void Effect::Slashing(Vector2& position, float t)//aŒ‚
 {
 }
 
-void Effect::Trigger(Vector2 position, float t)//ŠÔ’â~”­“®//giza.png
+void Effect::Trigger(Vector2& position, float t)//ŠÔ’â~”­“®//giza.png
 {
 	
 }
 
-void Effect::End(Vector2 position, float t)//ŠÔ’â~I—¹//hosi.png
+void Effect::End(Vector2& position, float t)//ŠÔ’â~I—¹//hosi.png
 {
 }
 

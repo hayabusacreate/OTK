@@ -3,7 +3,7 @@
 #include "Particle.h"
 #include "DxLib.h"
 
-__interface IParticleMediator
+interface IParticleMediator
 {
 	//Particle generate(const char* filename);
 };

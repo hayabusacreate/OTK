@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "DxLib.h"
 
+//Renderer renderer;
 
 Particle::Particle(const char * filename,Vector2 & position, Vector2 & velocity, const IParticleMediator * mediator):
 	filename(filename),
@@ -72,18 +73,22 @@ void Particle::Update()
 	position = velocity;
 
 	velocity += gravity;
+
+	*isDeadFrag = position.y < 480;
 }
 
 void Particle::Draw()
 {
 	//画像の読み込み
-	int GHandle = LoadGraph(filename);
+	//int GHandle = LoadGraph(filename);
 
 	// 読みこんだグラフィックを画面に描画
-	DrawGraph(position.x, position.y, GHandle, TRUE);
+	//DrawGraph(position.x, position.y, GHandle, TRUE);
 
 	// 読み込んだ画像のグラフィックハンドルを削除
-	DeleteGraph(GHandle);
+	//DeleteGraph(GHandle);
+
+	//renderer.Draw(filename, position);
 }
 
 bool* Particle::IsDead()

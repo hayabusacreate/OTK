@@ -9,12 +9,13 @@ class  Effect
 public:
 	 Effect();
 	 ~Effect();
-	 void BloodSplash(Vector2 position,float t);//ŒŒ‚µ‚Ô‚«
-	 void Afterimage(Vector2 position,float t);//c‘œ
-	 void Trajectory(Vector2 position,float t);//‹OÕ
-	 void Slashing(Vector2 position, float t);//aŒ‚
-	 void Trigger(Vector2 position, float t);//ŠÔ’â~”­“®
-	 void End(Vector2 position, float t);//ŠÔ’â~I—¹
+	 void BloodSplash(Vector2& position,float t);//ŒŒ‚µ‚Ô‚«
+	 void Afterimage(Vector2& position,float t);//c‘œ
+	 void Explosion(Vector2 position, float t);//”š”­
+	 void Trajectory(Vector2& position,float t);//‹OÕ
+	 void Slashing(Vector2& position, float t);//aŒ‚
+	 void Trigger(Vector2& position, float t);//ŠÔ’â~”­“®
+	 void End(Vector2& position, float t);//ŠÔ’â~I—¹
 	 //void Explosion();//”š”­
 	 void Test(const char* filename, Vector2 position, float t);//ƒeƒXƒg—p
 private:
