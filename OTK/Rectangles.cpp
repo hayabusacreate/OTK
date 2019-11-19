@@ -12,22 +12,22 @@ Rectangles::~Rectangles()
 {
 }
 
-inline int Rectangles::Rx()
+int Rectangles::Rx()
 {
 	return x;
 }
 
-inline int Rectangles::Ry()
+int Rectangles::Ry()
 {
 	return y;
 }
 
-inline int Rectangles::Rwidth()
+int Rectangles::Rwidth()
 {
 	return width;
 }
 
-inline int Rectangles::Rheight()
+int Rectangles::Rheight()
 {
 	return height;
 }

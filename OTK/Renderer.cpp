@@ -17,7 +17,6 @@ void Renderer::LoadTexture(const char * failname)
 	texture[failname] = LoadGraph(failname);
 }
 
-
 void Renderer::Draw(const char* failname,float x, float y)//‰æ‘œ•`‰æ(¶ãŽn“_)
 {
 	//‰æ‘œ‚Ì“Ç‚Ýž‚Ý
@@ -116,7 +115,7 @@ void Renderer::Rotate(const char * failname, Vector2 position, Vector2 scale, fl
 	//DeleteGraph(GHandle);
 }
 
-//void Renderer::MotionDraw(const char * failname, Vector2 position, Rectangles* rect)
-//{
-//	DrawRectGraph(position.x, position.y, rect->Rx(), rect->Ry(), rect->Rwidth(), rect->Rheight(), texture[failname], TRUE, FALSE);
-//}
+void Renderer::MotionDraw(const char * failname, Vector2 position, Rectangles* rect)
+{
+	DrawRectGraph(position.x, position.y, rect->Rx(), rect->Ry(), rect->Rwidth(), rect->Rheight(), texture[failname], TRUE, FALSE);
+}

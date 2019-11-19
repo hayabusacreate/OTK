@@ -5,13 +5,14 @@
 class Timer
 {
 public:
-	virtual ~Timer() {};
-	virtual void Init() = 0;
-	virtual void Update() = 0;
-	virtual bool IsTime() = 0;
-	virtual void SetTime(const float second) = 0;
-	virtual float Now() = 0;
-	virtual float Rate() = 0;
+	Timer(float second);
+	virtual ~Timer();
+	virtual void Init();
+	virtual void Update();
+	virtual bool IsTime();
+	virtual void SetTime(const float second);
+	virtual float Now();
+	virtual float Rate();
 protected:
 	float limitTime;
 	float currentTime;

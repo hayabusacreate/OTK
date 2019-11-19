@@ -29,6 +29,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SceneManager scenemanager;
 	scenemanager.Initialize();
 
+	Effect e;
 	// メインループ開始、ＥＳＣキーで外に出る
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
@@ -41,9 +42,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// 現在のカウント値を保存
 		FrameStartTime = GetNowCount();
 
-		scenemanager.Update();
-		scenemanager.Draw();
-		
+		//scenemanager.Update();
+		//scenemanager.Draw();
+		e.Explosion(Vector2(100, 100), 0.03f);
 		//反転
 		ScreenFlip();
 	}
