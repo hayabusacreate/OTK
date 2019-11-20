@@ -9,11 +9,21 @@
 #include "DxLib.h"
 
 Map map;
-Player player(Vector2(10, 5), map);
-Enemy enemy(Vector2(12, 10), map);
+Player player(Vector2(17, 4), map);
+Enemy enemy(Vector2(12, 3), map);
+Enemy enemy2(Vector2(3, 7), map);
+Enemy enemy3(Vector2(6, 11), map);
+Enemy enemy4(Vector2(12, 14), map);
+Enemy enemy5(Vector2(9, 11), map);
+Enemy enemy6(Vector2(14, 9), map);
+Enemy enemy7(Vector2(17, 6), map);
+Enemy enemy8(Vector2(18, 14), map);
+Enemy enemy9(Vector2(21, 12), map);
+Enemy enemy10(Vector2(22, 9), map);
 PlayerActionTime pActiont;
-GoalBlock goalblock(Vector2(14, 8));
-GoalBlock goalblock2(Vector2(8, 2));
+GoalBlock goalblock(Vector2(3, 16));
+GoalBlock goalblock2(Vector2(28, 4));
+GoalBlock goalblock3(Vector2(28,12));
 
 
 GamePlay::GamePlay(ISceneChanger * changer)
@@ -28,9 +38,19 @@ void GamePlay::Initialize()
 
 	player.Initialize();
 	enemy.Initialize();
+	enemy2.Initialize();
+	enemy3.Initialize();
+	enemy4.Initialize();
+	enemy5.Initialize();
+	enemy6.Initialize();
+	enemy7.Initialize();
+	enemy8.Initialize();
+	enemy9.Initialize();
+	enemy10.Initialize();
 	pActiont.Initialize();
 	goalblock.Initialize();
 	goalblock2.Initialize();
+	goalblock3.Initialize();
 	map.Initialize();
 }
 
@@ -40,17 +60,35 @@ void GamePlay::Update()
 	player.Update();
 	player.Action(pActiont.GetActionFlag());
 	pActiont.Update(player.GetActionFlag(), enemy.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy2.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy3.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy4.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy5.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy6.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy7.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy8.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy9.GetScore());
+	pActiont.Update(player.GetActionFlag(), enemy10.GetScore());
 	//enemy.Move(player.GetPosition(), player.GetScale());
 	enemy.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy4.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy5.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy6.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy7.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy8.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy9.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy10.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	goalblock.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	goalblock2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
-
+	goalblock3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	//if (CheckHitKey(KEY_INPUT_W) != 0)//W
 	//{
 	//	mSceneChanger->ChangeScene(eScene_Ending);
 	//}
 
-	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount();
+	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount() + goalblock3.GetBreakCount();
 
 	if (count == 2)
 	{
@@ -66,6 +104,16 @@ void GamePlay::Draw()
 	pActiont.Draw(0, 0);
 	player.Draw();
 	enemy.Draw();
+	enemy2.Draw();
+	enemy3.Draw();
+	enemy4.Draw();
+	enemy5.Draw();
+	enemy6.Draw();
+	enemy7.Draw();
+	enemy8.Draw();
+	enemy9.Draw();
+	enemy10.Draw();
 	goalblock.Draw();
 	goalblock2.Draw();
+	goalblock3.Draw();
 }

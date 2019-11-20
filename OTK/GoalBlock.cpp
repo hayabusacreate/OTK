@@ -1,7 +1,7 @@
 #include "GoalBlock.h"
 
 GoalBlock::GoalBlock(Vector2 InitPos)
-	:_position(InitPos.x * 32, InitPos.y * 32), _scale(Vector2(32, 32))
+	:_position(InitPos.x * 64, InitPos.y * 64), _scale(Vector2(64, 64))
 {
 
 }
@@ -13,7 +13,7 @@ GoalBlock::~GoalBlock()
 
 void GoalBlock::Initialize()
 {
-	img = LoadGraph("");
+	img = LoadGraph("GoalObj.png");
 	IsBreak = false;
 	BreakCount = 0;
 }
@@ -46,9 +46,10 @@ void GoalBlock::Draw()
 {
 	if (!IsBreak)
 	{
-		DrawBox((int)(_position.x - _scale.x * 0.5F), (int)(_position.y - _scale.y * 0.5F),
-			(int)(_position.x + _scale.x * 0.5F) + 1, (int)(_position.y + _scale.y * 0.5F) + 1,
-			GetColor(255, 255, 255), TRUE);
+		DrawGraph(_position.x - _scale.x , _position.y - _scale.y, img, TRUE);
+		//DrawBox((int)(_position.x - _scale.x * 0.5F), (int)(_position.y - _scale.y * 0.5F),
+		//	(int)(_position.x + _scale.x * 0.5F) + 1, (int)(_position.y + _scale.y * 0.5F) + 1,
+		//	GetColor(255, 255, 255), TRUE);
 	}
 }
 

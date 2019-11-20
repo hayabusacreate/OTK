@@ -183,6 +183,7 @@ void Player::Action(bool IsActionFlag)
 				if (InputFlag == 0)
 				{
 					ActionCount = 1;
+					radian = 0;
 				}
 				//前フレームでボタンが押されたかをtrueにする
 				InputFlag = 1;
@@ -199,7 +200,7 @@ void Player::Action(bool IsActionFlag)
 			//ジョイパッドのスティック入力取得
 			GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
 
-			radian = atan2((float)InputY - _position.y, (float)InputX - _position.x);
+			radian = atan2((float)InputY /*- _position.y*/, (float)InputX /*- _position.x*/);
 
 			if (/*key[KEY_INPUT_Z] == 1 || */pad & PAD_INPUT_A)
 			{
