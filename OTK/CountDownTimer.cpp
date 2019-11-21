@@ -2,12 +2,12 @@
 #include "CountDownTimer.h"
 #include <cmath>
 
-CountDownTimer::CountDownTimer()
+CountDownTimer::CountDownTimer():Timer(0)
 {
 	Init();
 }
 
-CountDownTimer::CountDownTimer(float t)
+CountDownTimer::CountDownTimer(float t):Timer(0)
 {
 	SetTime(t);
 	Init();
