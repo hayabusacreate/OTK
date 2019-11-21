@@ -4,6 +4,6 @@
 class Screen
 {
 public:
-	static const int WindowWidth = 640;
-	static const int WindowHeight = 480;
+	static const int WindowWidth = 1920;
+	static const int WindowHeight = 1080;
 };

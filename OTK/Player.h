@@ -52,13 +52,15 @@ private:
 	float Gravity;        // キャラに掛かる重力加速度
 	float JumpForce;      // キャラのジャンプ力
 	float MoveSpeed;      // キャラの移動スピード
+	float AttackSpeed;
 	float PlayerDownSpeed;//プレイヤーの落下速度
 	bool IsJumpFlag;      //ジャンプしたかどうか?
 	int img;
 
 
-	int anime[6];         //プレイヤーの画像枚数配列
+	int anime[88];         //プレイヤーの画像枚数配列
 	int ImgIndex;         //描画する画像の番号
+	int AnimNum;          //アニメーション番号
 	int count;            //カウント
 	Map _map;             //マップ情報
 
