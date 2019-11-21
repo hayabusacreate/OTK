@@ -42,10 +42,12 @@ void Player::Initialize()
 	InputY = 0;
 
 	InputFlag = 0;
+	IsActive = true;
 }
 
 void Player::Update()
 {
+	if (!IsActive) return;
 	if (ActionCount == 0)
 	{
 		Move();
@@ -98,15 +100,13 @@ void Player::Move()
 	velocity = Vector2(0, 0);
 
 	//左移動
-	if (/*key[KEY_INPUT_LEFT] == 2 ||*/
-		(pad & PAD_INPUT_LEFT))
+	if ((pad & PAD_INPUT_LEFT))
 	{
 		velocity.x -= MoveSpeed;
 	}
 
 	//右移動
-	if (/*key[KEY_INPUT_RIGHT] == 2 ||*/
-		(pad & PAD_INPUT_RIGHT))
+	if ((pad & PAD_INPUT_RIGHT))
 	{
 		velocity.x += MoveSpeed;
 	}
@@ -115,7 +115,7 @@ void Player::Move()
 	// 着地しているかつスペースが押されたとき
 	if (IsJumpFlag == false)
 	{
-		if (/*(key[KEY_INPUT_SPACE] == 1) || */(pad & PAD_INPUT_B))
+		if ((pad & PAD_INPUT_B))
 		{
 			//前フレームで押していなければ
 			if (InputFlag == 0)
@@ -144,9 +144,10 @@ void Player::Move()
 }
 
 
-//アクション実行(PlayerActionTimeのアクションフラグ:敵の位置:敵の大きさ)
+//アクション実行(PlayerActionTimeのアクションフラグ)
 void Player::Action(bool IsActionFlag)
 {
+	if (!IsActive) return;
 	//移動量の初期化
 	Vector2 velocity;
 	velocity = Vector2(0, 0);
@@ -163,7 +164,7 @@ void Player::Action(bool IsActionFlag)
 		if (ActionCount == 0)
 		{
 			//&zキーが押されたら
-			if (/*key[KEY_INPUT_Z] == 1 || */(pad & PAD_INPUT_A))
+			if ((pad & PAD_INPUT_A))
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
@@ -187,7 +188,7 @@ void Player::Action(bool IsActionFlag)
 
 			radian = atan2((float)InputY - _position.y, (float)InputX - _position.x);
 
-			if (/*key[KEY_INPUT_Z] == 1 || */pad & PAD_INPUT_A)
+			if (pad & PAD_INPUT_A)
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
@@ -197,7 +198,7 @@ void Player::Action(bool IsActionFlag)
 				//前フレームでボタンが押されたかをtrueにする
 				InputFlag = 1;
 			}
-			else if (/*key[KEY_INPUT_SPACE] == 1 || */pad & PAD_INPUT_B)
+			else if (pad & PAD_INPUT_B)
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
@@ -219,7 +220,7 @@ void Player::Action(bool IsActionFlag)
 			velocity.x += MoveSpeed * cos(radian);
 			velocity.y += MoveSpeed * sin(radian);
 
-			StartJoypadVibration(DX_INPUT_PAD1, 500,1);
+			StartJoypadVibration(DX_INPUT_PAD1, 500, 1);
 		}
 
 		//移動
@@ -235,6 +236,8 @@ void Player::Action(bool IsActionFlag)
 
 void Player::Draw()
 {
+	if (!IsActive) return;
+
 	//アクションモードが1の時
 	if (ActionCount == 1)
 	{
@@ -258,7 +261,6 @@ void Player::Draw()
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
 	++count;
-
 }
 
 int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 scale, bool * JumpFlag)
@@ -273,41 +275,41 @@ int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 
 	// 左下がブロックの上に当たったら落下を止める
 	if (_map.MapHitCheck(_position.x - hsize.x, _position.y + hsize.y, &Dummy, &velocity.y) == 3)
 	{
-		*PDownS = 0.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 0.0f;
 	}
 
 	// 右下がブロックの上当たっていたら落下を止める
 	if (_map.MapHitCheck(_position.x + hsize.x, _position.y + hsize.y, &Dummy, &velocity.y) == 3)
 	{
-		*PDownS = 0.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 0.0f;
 	}
 
 	// 左上がブロックの下に当たっていたら落下させる
 	if (_map.MapHitCheck(_position.x - hsize.x, _position.y - hsize.y, &Dummy, &velocity.y) == 4)
 	{
-		*PDownS = 1.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 1.0f;
 	}
 
 	// 右下がブロックの下に当たっていたら落下させる
 	if (_map.MapHitCheck(_position.x + hsize.x, _position.y - hsize.y, &Dummy, &velocity.y) == 4)
 	{
-		*PDownS = 1.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 1.0f;
 	}
 
 	// 上下移動成分を加算
@@ -349,44 +351,6 @@ int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 
 		}
 	}
 
-#pragma region ターゲットがいるとき
-	//// 左下のチェック
-	//if (_map.MapHitCheck(_position.x - hsize.x, _position.y + hsize.y, &velocity.x, &Dummy) == 2)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 右下のチェック
-	//if (_map.MapHitCheck(_position.x + hsize.x, _position.y + hsize.y, &velocity.x, &Dummy) == 1)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 左上のチェック
-	//if (_map.MapHitCheck(_position.x - hsize.x, _position.y - hsize.y, &velocity.x, &Dummy) == 2)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 右上のチェック
-	//if (_map.MapHitCheck(_position.x + hsize.x, _position.y - hsize.y, &velocity.x, &Dummy) == 1)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-#pragma endregion
-
 	// 左右移動成分を加算
 	_position.x += velocity.x;
 
@@ -420,6 +384,11 @@ Vector2 Player::GetScale()
 bool Player::GetActionFlag()
 {
 	return ActionFlag;
+}
+
+void Player::SetActive(bool value)
+{
+	IsActive = value;
 }
 
 

@@ -37,7 +37,11 @@ public:
 	//大きさを取得
 	Vector2 GetScale();
 
+	//敵を倒したときにゲージを増やすときに使ったやつ
 	int GetScore();
+
+	//非アクションのプレイヤーにぶつかったか？
+	bool GetHitPlayer();
 
 private:
 	Vector2 _position;    //エネミーの座標
@@ -55,4 +59,5 @@ private:
 
 	bool IsDeadFlag;
 	int Score;
+	bool isHitPlayer;
 };

@@ -29,6 +29,7 @@ void Enemy::Initialize()
 	IsDeadFlag = false;
 
 	Score = 0;
+	isHitPlayer = false;
 }
 
 //çXêV
@@ -99,7 +100,10 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 		}
 		else
 		{
-
+			if (IsDeadFlag == false)
+			{
+				isHitPlayer = true;
+			}
 		}
 	}
 }
@@ -184,4 +188,9 @@ Vector2 Enemy::GetScale()
 int Enemy::GetScore()
 {
 	return Score;
+}
+
+bool Enemy::GetHitPlayer()
+{
+	return isHitPlayer;
 }

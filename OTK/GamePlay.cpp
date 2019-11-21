@@ -45,15 +45,17 @@ void GamePlay::Update()
 	goalblock.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	goalblock2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 
-	//if (CheckHitKey(KEY_INPUT_W) != 0)//W
-	//{
-	//	mSceneChanger->ChangeScene(eScene_Ending);
-	//}
 
 	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount();
 
 	if (count == 2)
 	{
+		mSceneChanger->ChangeScene(eScene_Ending);
+	}
+
+	if (enemy.GetHitPlayer() == true)
+	{
+		player.SetActive(false);
 		mSceneChanger->ChangeScene(eScene_Ending);
 	}
 

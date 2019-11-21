@@ -29,6 +29,8 @@ void PlayerActionTime::Update(bool ActionFlag, int EnemyDeadScore)
 	//キー入力更新
 	InputKey();
 
+	pad = GetJoypadInputState(DX_INPUT_PAD1);
+
 	//最大値に到達したら最大値を入れる
 	if (expansionX >= MaxexpansionX)
 	{
@@ -57,7 +59,7 @@ void PlayerActionTime::Update(bool ActionFlag, int EnemyDeadScore)
 	else                   //してる
 	{
 		//スペースが押されたら（アクションがプレイヤーで実行されたら）
-		if (/*key[KEY_INPUT_SPACE] == 1 || */pad & PAD_INPUT_B)
+		if (pad & PAD_INPUT_B)
 		{
 			//前フレームで押していなければ
 			if (InputFlag == 0)
@@ -86,7 +88,6 @@ void PlayerActionTime::InputKey()
 {
 	static char pushkey[256];
 	GetHitKeyStateAll(pushkey);
-	pad = GetJoypadInputState(DX_INPUT_PAD1);
 	for (int i = 0; i < 256; i++)
 	{
 		//キーがnull出ないか?

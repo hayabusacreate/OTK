@@ -44,6 +44,8 @@ public:
 	//アクションフラグ取得
 	bool GetActionFlag();
 
+	void SetActive(bool value);
+
 private:
 	Vector2 _position;    //プレイヤーの座標
 	Vector2 _scale;       // プレイヤーのサイズ
@@ -71,4 +73,6 @@ private:
 	int InputX, InputY;
 
 	int InputFlag; //１フレ前にボタンがおされたら
+
+	bool IsActive;//true:死んだ false:生きている
 };
