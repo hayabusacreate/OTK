@@ -23,7 +23,7 @@ Enemy enemy10(Vector2(22, 9), map);
 PlayerActionTime pActiont;
 GoalBlock goalblock(Vector2(3, 16));
 GoalBlock goalblock2(Vector2(28, 4));
-GoalBlock goalblock3(Vector2(28,12));
+GoalBlock goalblock3(Vector2(28, 12));
 
 
 GamePlay::GamePlay(ISceneChanger * changer)
@@ -34,6 +34,8 @@ GamePlay::GamePlay(ISceneChanger * changer)
 
 void GamePlay::Initialize()
 {
+	PlaySoundFile("", DX_PLAYTYPE_LOOP);
+
 	count = 0;
 
 	player.Initialize();
@@ -69,7 +71,7 @@ void GamePlay::Update()
 	pActiont.Update(player.GetActionFlag(), enemy8.GetScore());
 	pActiont.Update(player.GetActionFlag(), enemy9.GetScore());
 	pActiont.Update(player.GetActionFlag(), enemy10.GetScore());
-	//enemy.Move(player.GetPosition(), player.GetScale());
+	enemy.Move(player.GetPosition(), player.GetScale(),player.GetActionFlag());
 	enemy.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
@@ -83,15 +85,26 @@ void GamePlay::Update()
 	goalblock.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	goalblock2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	goalblock3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
-	//if (CheckHitKey(KEY_INPUT_W) != 0)//W
-	//{
-	//	mSceneChanger->ChangeScene(eScene_Ending);
-	//}
 
 	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount() + goalblock3.GetBreakCount();
-
-	if (count == 2)
+	if (count == 3)
 	{
+		mSceneChanger->ChangeScene(eScene_Ending);
+	}
+
+	if (enemy.GetHitPlayer()||
+		enemy2.GetHitPlayer() || 
+		enemy3.GetHitPlayer() || 
+		enemy4.GetHitPlayer() || 
+		enemy5.GetHitPlayer() || 
+		enemy6.GetHitPlayer() || 
+		enemy7.GetHitPlayer() ||
+		enemy8.GetHitPlayer() ||
+		enemy9.GetHitPlayer() ||
+		enemy10.GetHitPlayer())
+	{
+		PlaySoundFile("", DX_PLAYTYPE_BACK);
+		player.SetActive(false);
 		mSceneChanger->ChangeScene(eScene_Ending);
 	}
 

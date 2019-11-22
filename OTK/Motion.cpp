@@ -3,8 +3,8 @@
 #include "Motion.h"
 #include "Range.h"
 #include "CountDownTimer.h"
-#include "Timer.h"
 #include "Rectangles.h"
+
 
 
 Motion::Motion()
@@ -12,7 +12,7 @@ Motion::Motion()
 	Init(Range(0, 0),CountDownTimer());
 }
 
-Motion::Motion(Range range, Timer timer)
+Motion::Motion(Range range, CountDownTimer timer)
 {
 	Init(range, timer);
 }
@@ -21,10 +21,10 @@ Motion::~Motion()
 {
 }
 
-void Motion::Init(Range range, Timer timer)
+void Motion::Init(Range range, CountDownTimer timer)
 {
 	this->range = &range;
-	this->timer = &timer;
+	this->timer = timer;
 	motionNumber = range.First();
 }
 
@@ -48,10 +48,10 @@ void Motion::Update()
 	{
 		return;
 	}
-	timer->Update();
-	if (timer->IsTime())
+	timer.Update();
+	if (timer.IsTime())
 	{
-		timer->Init();
+		timer.Init();
 		MotionUpdate();
 	}
 }

@@ -4,7 +4,7 @@
 //コンストラクタ
 //位置:マップ
 Enemy::Enemy(Vector2 pos, Map map)
-	:_position(pos.x * 64, pos.y * 64), _scale(Vector2(60, 60))
+	:SetFastPosition(pos.x * 64, pos.y * 64), _scale(Vector2(60, 60))
 {
 	this->_map = map;
 	Player player(Vector2(11, 10), _map);
@@ -19,64 +19,57 @@ Enemy::~Enemy()
 //初期化
 void Enemy::Initialize()
 {
+	_position = SetFastPosition;
 	MoveSpeed = 2.0f;
+	radian = 0;
 	anime[6] = { 0 };
 	ImgIndex = 0;
 	count = 0;
-	img = LoadGraph("puddle.png");
+	img = LoadDivGraph("puddle.png", 6, 6, 1, 32, 32, anime);
 	MoveCount = 0;
-	radian = 0;
-	IsDeadFlag = false;
-
 	Score = 0;
+	IsActive = true;
 	isHitPlayer = false;
 }
 
-//更新
-void Enemy::Update()
-{
-
-}
-
 //移動
-//
-void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca)
+void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 {
-	if (!IsDeadFlag)
+	if (!IsActive) return;
+	if (IsAction) return;
+	//移動量の初期化
+	Vector2 velocity;
+	velocity = Vector2(0, 0);
+
+	//プレイヤーと自分の当たり判定
+	auto dx = abs((PlayerPos.x + PlayerSca.x * 0.5f) - (_position.x + _scale.x * 0.5f));
+	auto dy = abs((PlayerPos.y + PlayerSca.y * 0.5f) - (_position.y + _scale.y * 0.5f));
+
+	//索敵範囲(*2)に当たっているか?
+	if (dx < (PlayerSca.x + _scale.x * 2) && dy < (PlayerSca.y + _scale.y * 2))
 	{
-		//移動量の初期化
-		Vector2 velocity;
-		velocity = Vector2(0, 0);
-
-		//プレイヤーと自分の当たり判定
-		auto dx = abs((PlayerPos.x + PlayerSca.x * 0.5f) - (_position.x + _scale.x * 0.5f));
-		auto dy = abs((PlayerPos.y + PlayerSca.y * 0.5f) - (_position.y + _scale.y * 0.5f));
-
-		//索敵範囲(*2)に当たっているか?
-		if (dx < (PlayerSca.x + _scale.x * 2) && dy < (PlayerSca.y + _scale.y * 2))
-		{
-			//移動カウント更新
-			MoveCount = 1;
-		}
-		else
-		{
-			//当たっていなければ戻す
-			MoveCount = 0;
-		}
-
-		//当たっていたらプレイヤーの座標に移動
-		if (MoveCount == 1)
-		{
-			radian = atan2(PlayerPos.y - _position.y, PlayerPos.x - _position.x);
-			velocity.x += MoveSpeed * cos(radian);
-			velocity.y += MoveSpeed * sin(radian);
-		}
-
-		//移動
-		CheckMapMove(_position, velocity, _scale);
+		//移動カウント更新
+		MoveCount = 1;
 	}
+	else
+	{
+		//当たっていなければ戻す
+		MoveCount = 0;
+	}
+
+	//当たっていたらプレイヤーの座標に移動
+	if (MoveCount == 1)
+	{
+		radian = atan2(PlayerPos.y - _position.y, PlayerPos.x - _position.x);
+		velocity.x += MoveSpeed * cos(radian);
+		velocity.y += MoveSpeed * sin(radian);
+	}
+
+	//移動
+	CheckMapMove(_position, velocity, _scale);
 }
 
+//プレイヤーに当たった時の処理
 void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 {
 	//敵との当たり判定
@@ -84,24 +77,30 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 	auto dy = abs((PlayerPos.y + PlayerScale.y / 2.f) - (_position.y + _scale.y / 2));
 
 	if (dx < (PlayerScale.x + _scale.x) / 2 && dy < (PlayerScale.y + _scale.y) / 2)
-	{ 
-		//プレイヤーがアクション状態の時だけ死亡する
+	{
+		//プレイヤーがアクション状態の
 		if (IsAction)
 		{
-			if (IsDeadFlag == false)
+			//自分が生きていたら死亡
+			if (IsActive == true)
 			{
+				//音楽、ゲージプラス、フラグを折る
+				PlaySoundFile("", DX_PLAYTYPE_BACK);
 				Score = 30;
-				IsDeadFlag = true;
+				IsActive = false;
 			}
 			else
 			{
+				//死んでいる敵に当たってもスコアは増えない
 				Score = 0;
 			}
 		}
 		else
 		{
-			if (IsDeadFlag == false)
+			//アクション状態でないプレイヤーに当たったら
+			if (IsActive == true)
 			{
+				//プレイヤーを殺すフラグを立てる
 				isHitPlayer = true;
 			}
 		}
@@ -111,24 +110,32 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 //描画
 void Enemy::Draw()
 {
-	if (!IsDeadFlag)
-	{
-		DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, img, FALSE);
+	if (!IsActive) return;
+	//敵の画像描画
+		//表示する画像の番号を変更
+	ImgIndex = count % 36;
+	ImgIndex /= 6;//中に6が入るように設定する
 
-		//敵の索敵範囲仮で表示
+	//アニメーション描画
+	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
+	//カウントを増やす
+	++count;
+
+	//敵の索敵範囲仮で表示
+	DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
+		(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
+		GetColor(255, 0, 0), FALSE);
+
+	//プレイヤーが索敵範囲内にいたら色を変える
+	if (MoveCount == 1)
+	{
 		DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
 			(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-			GetColor(255, 0, 0), FALSE);
-
-		if (MoveCount == 1)
-		{
-			DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-				(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-				GetColor(0, 255, 0), FALSE);
-		}
+			GetColor(0, 255, 0), FALSE);
 	}
 }
 
+//マップとの当たり判定
 int Enemy::CheckMapMove(Vector2 pos, Vector2 velocity, Vector2 scale)
 {
 	float Dummy = 0.0f;
@@ -141,10 +148,10 @@ int Enemy::CheckMapMove(Vector2 pos, Vector2 velocity, Vector2 scale)
 
 	// 左下がブロックの上に当たったら落下を止める
 	_map.MapHitCheck(_position.x - hsize.x, _position.y + hsize.y, &Dummy, &velocity.y);
-	
+
 	// 右下がブロックの上当たっていたら落下を止める
 	_map.MapHitCheck(_position.x + hsize.x, _position.y + hsize.y, &Dummy, &velocity.y);
-	
+
 	// 左上がブロックの下に当たっていたら落下させる
 	_map.MapHitCheck(_position.x - hsize.x, _position.y - hsize.y, &Dummy, &velocity.y);
 
@@ -180,16 +187,19 @@ Vector2 Enemy::GetPosition()
 	return Vector2(_position.x, _position.y);
 }
 
+//大きさ取得
 Vector2 Enemy::GetScale()
 {
 	return Vector2(_scale.x, _scale.y);
 }
 
+//ゲージに追加するポイントを取得
 int Enemy::GetScore()
 {
 	return Score;
 }
 
+//プレイヤーを殺すフラグを取得
 bool Enemy::GetHitPlayer()
 {
 	return isHitPlayer;

@@ -16,11 +16,8 @@ public:
 	//初期化
 	void Initialize();
 
-	//更新
-	void Update();
-
 	//移動(プレイヤーの位置：プレイヤーのサイズ)
-	void Move(Vector2 PlayerPos, Vector2 PlayerScale);
+	void Move(Vector2 PlayerPos, Vector2 PlayerScale,bool IsAction);
 
 	//プレイヤーと敵の当たり判定(プレイヤーの位置：プレイヤーのサイズ:アクション)
 	void HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction);
@@ -47,17 +44,16 @@ private:
 	Vector2 _position;    //エネミーの座標
 	Vector2 _scale;       // エネミーのサイズ
 	float MoveSpeed;      // キャラの移動スピード
-
-
+	float radian;         //敵の移動方向を代入
 	int anime[6];         //エネミーの画像枚数配列
 	int ImgIndex;         //描画する画像の番号
 	int count;            //カウント
-	Map _map;             //マップ情報を持っておく
 	int img;              //画像名
 	int MoveCount;        //移動用のカウント
-	float radian;         //
+	int Score;            //倒されたときのカウント
+	bool IsActive;        //ture:生きている false:死んでいる
+	bool isHitPlayer;     //true:プレイヤーに当たった false:プレイヤーに当たっていない
+	Map _map;             //マップ情報を持っておく
 
-	bool IsDeadFlag;
-	int Score;
-	bool isHitPlayer;
+	Vector2 SetFastPosition;//プレイヤーの初期位置格納用
 };
