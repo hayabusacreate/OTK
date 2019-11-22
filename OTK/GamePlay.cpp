@@ -12,9 +12,9 @@ Map map;
 Player player(Vector2(17, 4), map);
 Enemy enemy(Vector2(12, 3), map);
 Enemy enemy2(Vector2(3, 7), map);
-Enemy enemy3(Vector2(6, 11), map);
+Enemy enemy3(Vector2(7, 11), map);
 Enemy enemy4(Vector2(12, 14), map);
-Enemy enemy5(Vector2(9, 11), map);
+Enemy enemy5(Vector2(11, 11), map);
 Enemy enemy6(Vector2(14, 9), map);
 Enemy enemy7(Vector2(17, 6), map);
 Enemy enemy8(Vector2(18, 14), map);
@@ -23,7 +23,7 @@ Enemy enemy10(Vector2(22, 9), map);
 PlayerActionTime pActiont;
 GoalBlock goalblock(Vector2(3, 16));
 GoalBlock goalblock2(Vector2(28, 4));
-GoalBlock goalblock3(Vector2(28, 12));
+GoalBlock goalblock3(Vector2(28, 13));
 
 
 GamePlay::GamePlay(ISceneChanger * changer)
@@ -72,6 +72,15 @@ void GamePlay::Update()
 	pActiont.Update(player.GetActionFlag(), enemy9.GetScore());
 	pActiont.Update(player.GetActionFlag(), enemy10.GetScore());
 	enemy.Move(player.GetPosition(), player.GetScale(),player.GetActionFlag());
+	enemy2.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy3.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy4.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy5.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy6.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy7.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy8.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy9.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
+	enemy10.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy2.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
