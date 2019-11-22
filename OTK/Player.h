@@ -28,7 +28,6 @@ public:
 	//アクション実行(PlayerActionTimeのアクションフラグ:敵の位置:敵の大きさ)
 	void Action(bool ActionFlag);
 
-
 	//描画
 	void Draw();
 
@@ -44,20 +43,22 @@ public:
 	//アクションフラグ取得
 	bool GetActionFlag();
 
+	//プレイヤーの生存状態
 	void SetActive(bool value);
 
 private:
 	Vector2 _position;    //プレイヤーの座標
 	Vector2 _scale;       // プレイヤーのサイズ
+	Vector2 SetFastPosition;//プレイヤーの初期位置格納用
 	float Gravity;        // キャラに掛かる重力加速度
 	float JumpForce;      // キャラのジャンプ力
 	float MoveSpeed;      // キャラの移動スピード
-	float AttackSpeed;
+	float AttackSpeed;    //アクション移動時の速度
 	float PlayerDownSpeed;//プレイヤーの落下速度
-	bool IsJumpFlag;      //ジャンプしたかどうか?
-	int img;
+	bool IsJumpFlag;      //true:ジャンプした false:ジャンプしてない
 
 
+	int img;              //画像ID
 	int anime[88];         //プレイヤーの画像枚数配列
 	int ImgIndex;         //描画する画像の番号
 	int AnimNum;          //アニメーション番号
@@ -69,7 +70,6 @@ private:
 	int ActionCount;      //0:通常状態,1:索敵状態,2:角度指定&発射待機状態,3:移動状態
 	float radian;         //距離計算
 
-	int key[256];         // 0:入力されていない 1:入力された瞬間 2:入力されている
 	int pad;          // 0:入力されていない 1:入力された瞬間 2:入力されている
 
 	int InputX, InputY;

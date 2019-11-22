@@ -20,8 +20,6 @@ public:
 	 void Test(const char* filename, Vector2 position, float t);//テスト用
 private:
 	bool flag;//タイマーセット用
-	int i;
-	int GHandle[];
 };
 
 #endif // !_EFFECT_H_

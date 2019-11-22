@@ -31,6 +31,7 @@ void GoalBlock::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool ActionFla
 		{
 			if (IsBreak == false)
 			{
+				PlaySoundFile("", DX_PLAYTYPE_BACK);
 				BreakCount += 1;
 				IsBreak = true;
 			}
@@ -44,13 +45,9 @@ void GoalBlock::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool ActionFla
 
 void GoalBlock::Draw()
 {
-	if (!IsBreak)
-	{
-		DrawGraph(_position.x - _scale.x , _position.y - _scale.y, img, TRUE);
-		//DrawBox((int)(_position.x - _scale.x * 0.5F), (int)(_position.y - _scale.y * 0.5F),
-		//	(int)(_position.x + _scale.x * 0.5F) + 1, (int)(_position.y + _scale.y * 0.5F) + 1,
-		//	GetColor(255, 255, 255), TRUE);
-	}
+	if (IsBreak) return;
+
+	DrawGraph(_position.x - _scale.x, _position.y - _scale.y, img, TRUE);
 }
 
 int GoalBlock::GetBreakCount()
