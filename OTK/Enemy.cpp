@@ -120,19 +120,6 @@ void Enemy::Draw()
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
 	++count;
-
-	//敵の索敵範囲仮で表示
-	DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-		(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-		GetColor(255, 0, 0), FALSE);
-
-	//プレイヤーが索敵範囲内にいたら色を変える
-	if (MoveCount == 1)
-	{
-		DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-			(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-			GetColor(0, 255, 0), FALSE);
-	}
 }
 
 //マップとの当たり判定
