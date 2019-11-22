@@ -1,11 +1,8 @@
 #include "Player.h"
-#include "Input.h"
-
-Input input;
 
 //コンストラクタ
 Player::Player(Vector2 pos, Map map)
-	:_position(pos.x * 60, pos.y * 60), _scale(Vector2(60, 60))
+	:SetFastPosition(pos.x * 60, pos.y * 60), _scale(Vector2(60, 60))
 {
 	this->_map = map;
 }
@@ -18,78 +15,42 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	//指定位置の初期化
+	_position = SetFastPosition;
 	Gravity = 0.3f;
 	JumpForce = 9.0f;
 	MoveSpeed = 3.0f;
-	PlayerDownSpeed = 0.0f;
 	AttackSpeed = 30;
+	PlayerDownSpeed = 0.0f;
 	IsJumpFlag = false;
 
+	img = LoadDivGraph("saiba-rennbann2.png", 88, 11, 8, 64, 64, anime);
 	anime[88];
 	ImgIndex = 0;
 	count = 0;
 	AnimNum = 0;
-	//画像の読み込み
-	img = LoadDivGraph("saiba-rennbann2.png", 88, 11, 8, 64, 64, anime);
-
 
 	ActionFlag = false;
 	ActionCount = 0;
 	radian = 0;
-
-	key[256];
 	pad = 0;
-
 	InputX = 0;
 	InputY = 0;
-
 	InputFlag = 0;
+
+	IsActive = true;
 }
 
 void Player::Update()
 {
+	if (!IsActive) return;
 	if (ActionCount == 0)
 	{
 		Move();
 	}
 
+	//パッド入力の更新
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
-
-	InputKey_PAD();
-}
-
-//プレイヤーInputクラス(できればライブラリ化？したかった)
-void Player::InputKey_PAD()
-{
-	static char pushkey[256];
-	GetHitKeyStateAll(pushkey);
-	for (int i = 0; i < 256; i++)
-	{
-		//キーがnull出ないか?
-		if (pushkey[i])
-		{
-			//1フレ前にボタンが押されていなかったら
-			if (key[i] == 0)
-			{
-				key[i] = 1;
-			}
-			//1フレ前にボタンが押されていたら
-			else if (key[i] == 1)
-			{
-				key[i] = 2;
-			}
-		}
-		//何もなかったら
-		else key[i] = 0;
-	}
-
-	for (int i = 0; i < 28; i++)
-	{
-		if (pad & (1 << i))//ボタンiの入力フラグが立っていたら
-		{
-			DrawFormatString(0, i * 15, GetColor(255, 255, 255), "%dのキーが押されています", i);
-		}
-	}
 }
 
 void Player::Move()
@@ -98,16 +59,15 @@ void Player::Move()
 	Vector2 velocity;
 
 	velocity = Vector2(0, 0);
+
 	//左移動
-	if (/*key[KEY_INPUT_LEFT] == 2 ||*/
-		(pad & PAD_INPUT_LEFT))
+	if ((pad & PAD_INPUT_LEFT))
 	{
 		velocity.x -= MoveSpeed;
 		AnimNum = 3;
-	}else
+	}
 	//右移動
-	if (/*key[KEY_INPUT_RIGHT] == 2 ||*/
-		(pad & PAD_INPUT_RIGHT))
+	else if ((pad & PAD_INPUT_RIGHT))
 	{
 		velocity.x += MoveSpeed;
 		AnimNum = 2;
@@ -119,31 +79,23 @@ void Player::Move()
 		if (AnimNum == 2 || AnimNum == 4 || AnimNum == 6)
 			AnimNum = 0;
 	}
+
+
 	// 着地しているかつスペースが押されたとき
 	if (IsJumpFlag == false)
 	{
-		if (/*(key[KEY_INPUT_SPACE] == 1) || */(pad & PAD_INPUT_B))
+		if ((pad & PAD_INPUT_B))
 		{
-			//前フレームで押していなければ
-			if (InputFlag == 0)
-			{
-				PlayerDownSpeed -= JumpForce;
-				IsJumpFlag = true;
-				if (AnimNum == 0 || AnimNum == 2 || AnimNum == 6)
-					AnimNum = 4;
-					count = 0;
-				
-				if (AnimNum == 1 || AnimNum == 3 || AnimNum == 7)
-					AnimNum = 5;
-				
-			}
-			//前フレームでボタンが押されたかをtrueにする
-			InputFlag = 1;
-		}
-		else
-		{
-			//ボタンが押されていない場合は、falseにする
-			InputFlag = 0;
+			PlaySoundFile("", DX_PLAYTYPE_BACK);
+
+			PlayerDownSpeed -= JumpForce;
+			IsJumpFlag = true;
+			if (AnimNum == 0 || AnimNum == 2 || AnimNum == 6)
+				AnimNum = 4;
+			count = 0;
+
+			if (AnimNum == 1 || AnimNum == 3 || AnimNum == 7)
+				AnimNum = 5;
 		}
 	}
 
@@ -158,9 +110,10 @@ void Player::Move()
 }
 
 
-//アクション実行(PlayerActionTimeのアクションフラグ:敵の位置:敵の大きさ)
+//アクション実行(PlayerActionTimeのアクションフラグ)
 void Player::Action(bool IsActionFlag)
 {
+	if (!IsActive) return;
 	//移動量の初期化
 	Vector2 velocity;
 	velocity = Vector2(0, 0);
@@ -177,11 +130,12 @@ void Player::Action(bool IsActionFlag)
 		if (ActionCount == 0)
 		{
 			//&zキーが押されたら
-			if (/*key[KEY_INPUT_Z] == 1 || */(pad & PAD_INPUT_A))
+			if ((pad & PAD_INPUT_A))
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
+					PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 1;
 					radian = 0;
 				}
@@ -202,21 +156,23 @@ void Player::Action(bool IsActionFlag)
 
 			radian = atan2((float)InputY /*- _position.y*/, (float)InputX /*- _position.x*/);
 
-			if (/*key[KEY_INPUT_Z] == 1 || */pad & PAD_INPUT_A)
+			if (pad & PAD_INPUT_A)
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
+					PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 0;
 				}
 				//前フレームでボタンが押されたかをtrueにする
 				InputFlag = 1;
 			}
-			else if (/*key[KEY_INPUT_SPACE] == 1 || */pad & PAD_INPUT_B)
+			else if (pad & PAD_INPUT_B)
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
+					PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 2;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -233,7 +189,8 @@ void Player::Action(bool IsActionFlag)
 		{
 			velocity.x += AttackSpeed * cos(radian);
 			velocity.y += AttackSpeed * sin(radian);
-			StartJoypadVibration(DX_INPUT_PAD1, 500,1);
+
+			StartJoypadVibration(DX_INPUT_PAD1, 500, 1);
 		}
 
 		//移動
@@ -249,27 +206,13 @@ void Player::Action(bool IsActionFlag)
 
 void Player::Draw()
 {
-	//アクションモードが1の時
-	if (ActionCount == 1)
-	{
-		//敵の索敵範囲仮で表示
-		DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-			(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-			GetColor(0, 255, 0), FALSE);
-	}
-	else
-	{
-		//敵の索敵範囲仮で表示
-		DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-			(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-			GetColor(255, 255, 0), FALSE);
-	}
+	if (!IsActive) return;
+
 	//表示する画像の番号を変更
 	ImgIndex = count % 121;
 	ImgIndex /= 11;//中に6が入るように設定する
-
-	//アニメーション描画
-	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex+(11*AnimNum)], true);
+    //アニメーション描画
+	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex + (11 * AnimNum)], true);
 
 	if (ActionCount != 1)
 	{
@@ -296,16 +239,15 @@ void Player::Draw()
 		{
 			count = 0;
 		}
-		else if(count>=11)
+		else if (count >= 11)
 		{
-			count==12;
+			count == 12;
 		}
-		if(AnimNum==0|| AnimNum == 2 || AnimNum == 4)
-		AnimNum = 6;
+		if (AnimNum == 0 || AnimNum == 2 || AnimNum == 4)
+			AnimNum = 6;
 		if (AnimNum == 1 || AnimNum == 3 || AnimNum == 5)
 			AnimNum = 7;
 	}
-
 }
 
 int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 scale, bool * JumpFlag)
@@ -320,41 +262,41 @@ int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 
 	// 左下がブロックの上に当たったら落下を止める
 	if (_map.MapHitCheck(_position.x - hsize.x, _position.y + hsize.y, &Dummy, &velocity.y) == 3)
 	{
-		*PDownS = 0.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 0.0f;
 	}
 
 	// 右下がブロックの上当たっていたら落下を止める
 	if (_map.MapHitCheck(_position.x + hsize.x, _position.y + hsize.y, &Dummy, &velocity.y) == 3)
 	{
-		*PDownS = 0.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 0.0f;
 	}
 
 	// 左上がブロックの下に当たっていたら落下させる
 	if (_map.MapHitCheck(_position.x - hsize.x, _position.y - hsize.y, &Dummy, &velocity.y) == 4)
 	{
-		*PDownS = 1.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 1.0f;
 	}
 
 	// 右下がブロックの下に当たっていたら落下させる
 	if (_map.MapHitCheck(_position.x + hsize.x, _position.y - hsize.y, &Dummy, &velocity.y) == 4)
 	{
-		*PDownS = 1.0f;
 		if (ActionCount == 2)
 		{
 			ActionCount = 1;
 		}
+		*PDownS = 1.0f;
 	}
 
 	// 上下移動成分を加算
@@ -396,44 +338,6 @@ int Player::CheckMapMove(Vector2 pos, float * PDownS, Vector2 velocity, Vector2 
 		}
 	}
 
-#pragma region ターゲットがいるとき
-	//// 左下のチェック
-	//if (_map.MapHitCheck(_position.x - hsize.x, _position.y + hsize.y, &velocity.x, &Dummy) == 2)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 右下のチェック
-	//if (_map.MapHitCheck(_position.x + hsize.x, _position.y + hsize.y, &velocity.x, &Dummy) == 1)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 左上のチェック
-	//if (_map.MapHitCheck(_position.x - hsize.x, _position.y - hsize.y, &velocity.x, &Dummy) == 2)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-
-	//// 右上のチェック
-	//if (_map.MapHitCheck(_position.x + hsize.x, _position.y - hsize.y, &velocity.x, &Dummy) == 1)
-	//{
-	//	if (ActionCount == 3)
-	//	{
-	//		ActionCount = 1;
-	//	}
-	//}
-#pragma endregion
-
 	// 左右移動成分を加算
 	_position.x += velocity.x;
 
@@ -467,6 +371,11 @@ Vector2 Player::GetScale()
 bool Player::GetActionFlag()
 {
 	return ActionFlag;
+}
+
+void Player::SetActive(bool value)
+{
+	IsActive = value;
 }
 
 

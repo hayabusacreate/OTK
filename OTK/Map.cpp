@@ -13,7 +13,7 @@ Map::~Map()
 
 void Map::Initialize()
 {
-	//img = LoadDivGraph("0001.png", 1, 1, 1, 64, 64, chip);
+	
 }
 
 int Map::GetMapChip(float x, float y)
@@ -27,8 +27,7 @@ int Map::GetMapChip(float x, float y)
 
 void Map::Draw()
 {
-	LoadDivGraph("haikei.png", 2, 2,1, 64, 64, chip);
-	//LoadDivGraph("0001.png", 1, 1, 1, 64, 64, chip);
+	LoadDivGraph("haikei.png", 2, 2, 1, 64, 64, chip);
 	for (int y = 0; y < 17; y++)
 	{
 		for (int x = 0; x < 30; x++)

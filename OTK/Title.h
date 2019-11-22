@@ -11,4 +11,7 @@ public:
 	void Update() override;        //更新処理をオーバーライド。
 	void Draw() override;            //描画処理をオーバーライド。
 
+private:
+	int pad;
+	int InputMonitor;
 };

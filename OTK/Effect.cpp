@@ -12,7 +12,7 @@ Renderer renderer;
 CountDownTimer timer;
 Motion motion;
 
-Effect::Effect():i(0),GHandle()
+Effect::Effect()
 {
 	flag = false;
 	renderer.LoadTexture("ring.png");
@@ -21,10 +21,6 @@ Effect::Effect():i(0),GHandle()
 
 Effect::~Effect()
 {
-	for (i = 0; i < 12; i++)
-	{
-		DeleteGraph(GHandle[i]);
-	}
 }
 
 void Effect::BloodSplash(Vector2& position, float t)//ååÇµÇ‘Ç´//maru.png
@@ -38,10 +34,22 @@ void Effect::Afterimage(Vector2& position, float t)//écëú
 
 void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 {
-	
+	/*if (!flag)
+	{
+		timer.SetTime(10);
+		flag = true;
+	}
+	timer.Update();
+	SetDrawBright(timer.Now() / 10 * 255, 0, 0);
+	renderer.Draw("ring.png", position);
+	renderer.Draw("ring.png", position.x, position.y + timer.Now() * 20);
+	SetDrawBright(255, 255, 255);
+	renderer.Draw("ring.png", timer.Rate() * 100 + position.x, position.y);*/
+
+
 	//explosion.jpg
 	
-	/*if (!flag)
+	if (!flag)
 	{
 		for (int i = 0; i < 12; i++)
 		{
@@ -51,24 +59,8 @@ void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 		flag = true;
 	}
 	motion.Update();
-	renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());*/
-	if (!flag)
-	{
-		i = 0;
-		GHandle[13];
-		LoadDivGraph("explosion.png", 13, 3, 5, 120, 120, GHandle);
-		flag = true;
-	}
-	int a = i / (t * 60);
-	if (a < 13)
-	{
-		SetDrawBright(114, 178, 227);
-		DrawGraph(position.x, position.y, GHandle[a], FALSE);
-		SetDrawBright(255, 255, 255);
-		
-	}
-	++i;
-	if (a >= 20 )i = 0;
+	//DrawRectGraph(position.x, position.y, 0, 0, 1, 1;
+	/*renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());*/
 }
 
 void Effect::Trajectory(Vector2& position, float t)//ãOê’//bou.png
