@@ -30,13 +30,26 @@ void Enemy::Initialize()
 	Score = 0;
 	IsActive = true;
 	isHitPlayer = false;
+	timer.SetTime(0);
+	t = false;
+	counts = false;
+	effect.Init();
 }
 
 //ˆÚ“®
 void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 {
+	if (counts)return;
+	if (!IsActive && !t)
+	{
+		timer.SetTime(1.5f);
+		t = true;
+	}
+	if (t)timer.Update();
+	if (t&&timer.IsTime())counts = true;
 	if (!IsActive) return;
 	if (IsAction) return;
+
 	//ˆÚ“®—Ê‚Ì‰Šú‰»
 	Vector2 velocity;
 	velocity = Vector2(0, 0);
@@ -72,6 +85,7 @@ void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 //ƒvƒŒƒCƒ„[‚É“–‚½‚Á‚½‚Ìˆ—
 void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 {
+
 	//“G‚Æ‚Ì“–‚½‚è”»’è
 	auto dx = abs((PlayerPos.x + PlayerScale.x / 2.f) - (_position.x + _scale.x / 2));
 	auto dy = abs((PlayerPos.y + PlayerScale.y / 2.f) - (_position.y + _scale.y / 2));
@@ -110,7 +124,10 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 //•`‰æ
 void Enemy::Draw()
 {
-	if (!IsActive) return;
+	if (counts) return;
+
+	if(t)effect.Explosion(_position, 0.1f);
+
 	//“G‚Ì‰æ‘œ•`‰æ
 		//•\¦‚·‚é‰æ‘œ‚Ì”Ô†‚ğ•ÏX
 	ImgIndex = count % 36;
