@@ -45,7 +45,7 @@ private:
 	Vector2 _scale;       // エネミーのサイズ
 	float MoveSpeed;      // キャラの移動スピード
 	float radian;         //敵の移動方向を代入
-	int anime[6];         //エネミーの画像枚数配列
+	int anime[12];         //エネミーの画像枚数配列
 	int ImgIndex;         //描画する画像の番号
 	int count;            //カウント
 	int img;              //画像名

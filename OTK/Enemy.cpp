@@ -22,10 +22,10 @@ void Enemy::Initialize()
 	_position = SetFastPosition;
 	MoveSpeed = 2.0f;
 	radian = 0;
-	anime[6] = { 0 };
+	anime[12] = { 0 };
 	ImgIndex = 0;
 	count = 0;
-	img = LoadDivGraph("puddle.png", 6, 6, 1, 32, 32, anime);
+	img = LoadDivGraph("doro-nn.png", 12, 11, 1, 64, 64, anime);
 	MoveCount = 0;
 	Score = 0;
 	IsActive = true;
@@ -113,13 +113,13 @@ void Enemy::Draw()
 	if (!IsActive) return;
 	//敵の画像描画
 		//表示する画像の番号を変更
-	ImgIndex = count % 36;
-	ImgIndex /= 6;//中に6が入るように設定する
+	ImgIndex = count % 121;
+	ImgIndex /= 11;//中に6が入るように設定する
 
 	//アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
-	++count;
+	count +=2;
 }
 
 //マップとの当たり判定

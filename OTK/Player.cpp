@@ -210,7 +210,7 @@ void Player::Draw()
 
 	//表示する画像の番号を変更
 	ImgIndex = count % 121;
-	ImgIndex /= 11;//中に6が入るように設定する
+	ImgIndex /= 11;
     //アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex + (11 * AnimNum)], true);
 
