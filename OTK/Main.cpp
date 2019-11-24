@@ -26,11 +26,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// ６０ＦＰＳ固定用、時間保存用変数を現在のカウント値にセット
 	int FrameStartTime = GetNowCount();
 
+	int pad;
+
 	SceneManager scenemanager;
 	scenemanager.Initialize();
 
 	// メインループ開始、ＥＳＣキーで外に出る
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	while (ProcessMessage() == 0/* && CheckHitKey(KEY_INPUT_ESCAPE) == 0*/)
 	{
 		// 画面のクリア
 		ClearDrawScreen();
@@ -40,6 +42,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		// 現在のカウント値を保存
 		FrameStartTime = GetNowCount();
+
+		pad = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+		if (pad & PAD_INPUT_12)
+		{
+			return -1;
+		}
 
 		scenemanager.Update();
 		scenemanager.Draw();

@@ -1,30 +1,30 @@
-#include "Ending.h"
+#include "GameOver.h"
 #include <DxLib.h>
 
-Ending::Ending(ISceneChanger* changer) : BaseScene(changer)
+GameOver::GameOver(ISceneChanger* changer) : BaseScene(changer)
 {
 }
 
-void Ending::Initialize()
+void GameOver::Initialize()
 {
-	mImageHandle = LoadGraph("clear.png");
-	SoundHandle = LoadSoundMem("GameClear.mp3");
+	mImageHandle = LoadGraph("over.png");
+	SoundHandle = LoadSoundMem("GameOver.mp3");
 	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
 	InputMonitor = 0;
 }
 
-void Ending::Finalize()
+void GameOver::Finalize()
 {
 	BaseScene::Finalize();
 	StopSoundMem(SoundHandle);
 }
 
-void Ending::Update()
+void GameOver::Update()
 {
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
 	if (pad & PAD_INPUT_B)
-	{ 
+	{
 		if (InputMonitor == 0)
 		{
 			mSceneChanger->ChangeScene(eScene_Title);//シーンをメニューに変更
@@ -37,10 +37,10 @@ void Ending::Update()
 	}
 }
 
-void Ending::Draw()
+void GameOver::Draw()
 {
 	BaseScene::Draw();//親クラスの描画メソッドを呼ぶ
-	DrawString(0, 0, "エンディング画面です。", GetColor(255, 255, 255));
+	DrawString(0, 0, "ゲームオーバー画面です。", GetColor(255, 255, 255));
 	DrawString(0, 20, "Bボタンを押すとタイトルに進みます。", GetColor(255, 255, 255));
-	/*DrawGraph(0, 0, mImageHandle, TRUE);*/
 }
+

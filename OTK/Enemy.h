@@ -62,4 +62,6 @@ private:
 	CountDownTimer timer;
 	bool t;//タイマーのセットを一度だけ通す
 	bool counts;
+
+	int SoundHandle;
 };

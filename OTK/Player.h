@@ -77,4 +77,6 @@ private:
 	int InputFlag; //１フレ前にボタンがおされたら
 
 	bool IsActive;//true:死んだ false:生きている
+
+	int SoundHandle;
 };

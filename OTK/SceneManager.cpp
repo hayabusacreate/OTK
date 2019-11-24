@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Title.h"
 #include "GamePlay.h"
+#include "GameOver.h"
 #include "Ending.h"
 #include "SceneManager.h"
 
@@ -35,6 +36,9 @@ void SceneManager::Update() {
 			break;
 		case eScene_Ending:
 			mScene = (BaseScene*) new Ending(this);
+			break;
+		case eScene_GameOver:
+			mScene = (BaseScene*) new GameOver(this);
 			break;
 		}
 		mNextScene = eScene_None;    //次のシーン情報をクリア

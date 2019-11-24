@@ -34,7 +34,10 @@ GamePlay::GamePlay(ISceneChanger * changer)
 
 void GamePlay::Initialize()
 {
-	PlaySoundFile("", DX_PLAYTYPE_LOOP);
+	SoundHandle = LoadSoundMem("GamePlayBGM.mp3");
+	//音量調節(最大は255,パーセントをかける)
+	ChangeVolumeSoundMem(255 * 80 / 100, SoundHandle);
+	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
 
 	count = 0;
 
@@ -54,6 +57,12 @@ void GamePlay::Initialize()
 	goalblock2.Initialize();
 	goalblock3.Initialize();
 	map.Initialize();
+}
+
+void GamePlay::Finalize()
+{
+	BaseScene::Finalize();
+	StopSoundMem(SoundHandle);
 }
 
 
@@ -112,9 +121,9 @@ void GamePlay::Update()
 		enemy9.GetHitPlayer() ||
 		enemy10.GetHitPlayer())
 	{
-		PlaySoundFile("", DX_PLAYTYPE_BACK);
+		//死んだ
 		player.SetActive(false);
-		mSceneChanger->ChangeScene(eScene_Ending);
+		mSceneChanger->ChangeScene(eScene_GameOver);
 	}
 
 }

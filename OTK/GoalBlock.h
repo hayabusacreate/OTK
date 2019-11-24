@@ -26,4 +26,6 @@ private:
 	int BreakCount;
 
 	bool IsBreak;
+
+	int SoundHandle;
 };

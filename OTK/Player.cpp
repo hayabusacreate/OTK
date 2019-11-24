@@ -11,6 +11,7 @@ Player::Player(Vector2 pos, Map map)
 Player::~Player()
 {
 	DeleteGraph(img);
+	DeleteSoundMem(SoundHandle);
 }
 
 void Player::Initialize()
@@ -39,6 +40,8 @@ void Player::Initialize()
 	InputFlag = 0;
 
 	IsActive = true;
+
+	SoundHandle = LoadSoundMem("ActionSE.mp3");
 }
 
 void Player::Update()
@@ -135,7 +138,7 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					PlaySoundFile("", DX_PLAYTYPE_BACK);
+					PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
 					ActionCount = 1;
 					radian = 0;
 				}
@@ -151,17 +154,18 @@ void Player::Action(bool IsActionFlag)
 		//方向入力状態
 		else if (ActionCount == 1)
 		{
+			
 			//ジョイパッドのスティック入力取得
 			GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
 
-			radian = atan2((float)InputY /*- _position.y*/, (float)InputX /*- _position.x*/);
+			radian = atan2((float)InputY, (float)InputX);
 
 			if (pad & PAD_INPUT_A)
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					PlaySoundFile("", DX_PLAYTYPE_BACK);
+					//PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 0;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -172,7 +176,7 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					PlaySoundFile("", DX_PLAYTYPE_BACK);
+					//PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 2;
 				}
 				//前フレームでボタンが押されたかをtrueにする

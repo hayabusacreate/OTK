@@ -16,6 +16,8 @@ void GoalBlock::Initialize()
 	img = LoadGraph("GoalObj.png");
 	IsBreak = false;
 	BreakCount = 0;
+
+	SoundHandle = LoadSoundMem("Destroy.mp3");
 }
 
 void GoalBlock::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool ActionFlag)
@@ -25,13 +27,13 @@ void GoalBlock::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool ActionFla
 	auto dy = abs((PlayerPos.y + PlayerScale.y * 0.5f) - (_position.y + _scale.y * 0.5f));
 
 	//“–‚½‚Á‚Ä‚¢‚é‚©
-	if (dx < (PlayerScale.x + _scale.x) / 2 && dy < (PlayerScale.y + _scale.y * 2))
+	if (dx < (PlayerScale.x + _scale.x) / 2 && dy < (PlayerScale.y + _scale.y)/2)
 	{
 		if (ActionFlag)
 		{
 			if (IsBreak == false)
 			{
-				PlaySoundFile("", DX_PLAYTYPE_BACK);
+				PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
 				BreakCount += 1;
 				IsBreak = true;
 			}
