@@ -9,8 +9,6 @@
 #include "DxLib.h"
 
 Renderer renderer;
-CountDownTimer timer;
-Motion motion;
 
 Effect::Effect()
 {
@@ -21,6 +19,13 @@ Effect::Effect()
 
 Effect::~Effect()
 {
+}
+
+void Effect::Init()
+{
+	flag = false;
+	count = 0;
+	img[9999];
 }
 
 void Effect::BloodSplash(Vector2& position, float t)//ååÇµÇ‘Ç´//maru.png
@@ -34,33 +39,19 @@ void Effect::Afterimage(Vector2& position, float t)//écëú
 
 void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 {
-	/*if (!flag)
-	{
-		timer.SetTime(10);
-		flag = true;
-	}
-	timer.Update();
-	SetDrawBright(timer.Now() / 10 * 255, 0, 0);
-	renderer.Draw("ring.png", position);
-	renderer.Draw("ring.png", position.x, position.y + timer.Now() * 20);
-	SetDrawBright(255, 255, 255);
-	renderer.Draw("ring.png", timer.Rate() * 100 + position.x, position.y);*/
-
-
-	//explosion.jpg
-	
 	if (!flag)
 	{
-		for (int i = 0; i < 12; i++)
-		{
-			motion.Add(i,&Rectangles(120 * (i % 3), 120 * (i % 3), 120, 120));
-		}
-		motion.Init(Range(0, 12), CountDownTimer(t));
+		count = 0;
 		flag = true;
+		img[13];
+		
+		LoadDivGraph("explosion.jpg", 13, 3, 5, 120, 120, img);
 	}
-	motion.Update();
-	//DrawRectGraph(position.x, position.y, 0, 0, 1, 1;
-	/*renderer.MotionDraw("explosion.jpg", position, motion.DrawwingRange());*/
+	
+	count++;
+	int a = count/ (t * 60) ;
+	if (a < 14)DrawGraph(position.x - 60, position.y - 60, img[a], FALSE);
+	if (a >= 13)count = 10000;
 }
 
 void Effect::Trajectory(Vector2& position, float t)//ãOê’//bou.png

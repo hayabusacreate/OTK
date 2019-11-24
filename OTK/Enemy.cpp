@@ -30,13 +30,26 @@ void Enemy::Initialize()
 	Score = 0;
 	IsActive = true;
 	isHitPlayer = false;
+	timer.SetTime(0);
+	t = false;
+	counts = false;
+	effect.Init();
 }
 
 //移動
 void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 {
+	if (counts)return;
+	if (!IsActive && !t)
+	{
+		timer.SetTime(1.5f);
+		t = true;
+	}
+	if (t)timer.Update();
+	if (t&&timer.IsTime())counts = true;
 	if (!IsActive) return;
 	if (IsAction) return;
+
 	//移動量の初期化
 	Vector2 velocity;
 	velocity = Vector2(0, 0);
@@ -72,6 +85,7 @@ void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 //プレイヤーに当たった時の処理
 void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 {
+
 	//敵との当たり判定
 	auto dx = abs((PlayerPos.x + PlayerScale.x / 2.f) - (_position.x + _scale.x / 2));
 	auto dy = abs((PlayerPos.y + PlayerScale.y / 2.f) - (_position.y + _scale.y / 2));
@@ -110,7 +124,10 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 //描画
 void Enemy::Draw()
 {
-	if (!IsActive) return;
+	if (counts) return;
+
+	if(t)effect.Explosion(_position, 0.1f);
+
 	//敵の画像描画
 		//表示する画像の番号を変更
 	ImgIndex = count % 36;
@@ -120,19 +137,6 @@ void Enemy::Draw()
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
 	++count;
-
-	//敵の索敵範囲仮で表示
-	DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-		(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-		GetColor(255, 0, 0), FALSE);
-
-	//プレイヤーが索敵範囲内にいたら色を変える
-	if (MoveCount == 1)
-	{
-		DrawBox((int)(_position.x - _scale.x * 2.0f), (int)(_position.y - _scale.y * 2.0f),
-			(int)(_position.x + _scale.x * 2.0f) + 1, (int)(_position.y + _scale.y * 2.0f) + 1,
-			GetColor(0, 255, 0), FALSE);
-	}
 }
 
 //マップとの当たり判定
