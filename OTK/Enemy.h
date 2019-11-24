@@ -2,6 +2,8 @@
 #include <DxLib.h>
 #include "Map.h"
 #include "Renderer.h"
+#include "Effect.h"
+#include "CountDownTimer.h"
 
 //エネミークラス
 class Enemy
@@ -54,6 +56,10 @@ private:
 	bool IsActive;        //ture:生きている false:死んでいる
 	bool isHitPlayer;     //true:プレイヤーに当たった false:プレイヤーに当たっていない
 	Map _map;             //マップ情報を持っておく
-
+	
 	Vector2 SetFastPosition;//プレイヤーの初期位置格納用
+	Effect effect;
+	CountDownTimer timer;
+	bool t;//タイマーのセットを一度だけ通す
+	bool counts;
 };

@@ -9,6 +9,7 @@ class  Effect
 public:
 	 Effect();
 	 ~Effect();
+	 void Init();
 	 void BloodSplash(Vector2& position,float t);//血しぶき
 	 void Afterimage(Vector2& position,float t);//残像
 	 void Explosion(Vector2 position, float t);//爆発
@@ -20,6 +21,8 @@ public:
 	 void Test(const char* filename, Vector2 position, float t);//テスト用
 private:
 	bool flag;//タイマーセット用
+	int count;
+	int img[9999];
 };
 
 #endif // !_EFFECT_H_
