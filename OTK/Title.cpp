@@ -3,7 +3,7 @@
 
 Title::Title(ISceneChanger* changer) : BaseScene(changer)
 {
-	
+
 }
 
 //初期化
@@ -11,14 +11,17 @@ void Title::Initialize()
 {
 	mImageHandle = LoadGraph("title.png");    //画像のロード
 	InputMonitor = 0;
-	SoundHandle = LoadSoundMem("Title.mp3");
-	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	//SoundHandle = LoadSoundMem("Title.mp3");
+	//PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	sound.PlayBGM("Title.mp3");
+
 }
 
 void Title::Finalize()
 {
 	BaseScene::Finalize();
-	StopSoundMem(SoundHandle);
+	//StopSoundMem(SoundHandle);
+	sound.StopBGM("Title.mp3");
 }
 
 //更新
@@ -27,7 +30,8 @@ void Title::Update()
 
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
-	if (pad & PAD_INPUT_B)
+	//if (pad & PAD_INPUT_B)//KEY_INPUT_Q  CheckHitKey( KEY_INPUT_Z ) == 0 
+	if ((pad & PAD_INPUT_B) || (CheckHitKey(KEY_INPUT_Q) == 1))
 	{
 		if (InputMonitor == 0)
 		{

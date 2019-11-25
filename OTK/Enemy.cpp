@@ -35,7 +35,7 @@ void Enemy::Initialize()
 	counts = false;
 	effect.Init();
 
-	SoundHandle = LoadSoundMem("Destroy.mp3");
+	//SoundHandle = LoadSoundMem("Destroy.mp3");
 }
 
 //移動
@@ -101,7 +101,8 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 			if (IsActive == true)
 			{
 				//音楽、ゲージプラス、フラグを折る
-				PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+				//PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+				sound.PlaySE("Destroy.mp3");
 				Score = 30;
 				IsActive = false;
 			}
@@ -124,21 +125,24 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 }
 
 //描画
-void Enemy::Draw()
+void Enemy::Draw(bool IsAction)
 {
 	if (counts) return;
 
-	if(t)effect.Explosion(_position, 0.1f);
+	if (t)effect.Explosion(_position, 0.1f);
 
 	//敵の画像描画
-		//表示する画像の番号を変更
-	ImgIndex = count % 121;
-	ImgIndex /= 11;//中に6が入るように設定する
+	//表示する画像の番号を変更
+	if (!IsAction)
+	{
+		ImgIndex = count % 121;
+		ImgIndex /= 11;
+		count += 2;
+	}
 
 	//アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
-	count +=2;
 }
 
 //マップとの当たり判定

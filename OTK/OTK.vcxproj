@@ -175,6 +175,8 @@
     <ClCompile Include="Rectangles.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="TimeStop.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
@@ -201,8 +203,10 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TimeStop.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>

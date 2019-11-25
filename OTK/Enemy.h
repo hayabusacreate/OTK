@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "Effect.h"
 #include "CountDownTimer.h"
+#include "Sound.h"
 
 //エネミークラス
 class Enemy
@@ -19,13 +20,13 @@ public:
 	void Initialize();
 
 	//移動(プレイヤーの位置：プレイヤーのサイズ)
-	void Move(Vector2 PlayerPos, Vector2 PlayerScale,bool IsAction);
+	void Move(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction);
 
 	//プレイヤーと敵の当たり判定(プレイヤーの位置：プレイヤーのサイズ:アクション)
 	void HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction);
 
 	//描画
-	void Draw();
+	void Draw(bool IsAction);
 
 	//当たり判定
 	int CheckMapMove(Vector2 pos, Vector2 velocity, Vector2 scale);
@@ -56,7 +57,7 @@ private:
 	bool IsActive;        //ture:生きている false:死んでいる
 	bool isHitPlayer;     //true:プレイヤーに当たった false:プレイヤーに当たっていない
 	Map _map;             //マップ情報を持っておく
-	
+
 	Vector2 SetFastPosition;//プレイヤーの初期位置格納用
 	Effect effect;
 	CountDownTimer timer;
@@ -64,4 +65,5 @@ private:
 	bool counts;
 
 	int SoundHandle;
+	Sound sound;
 };

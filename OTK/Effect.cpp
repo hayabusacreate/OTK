@@ -14,7 +14,7 @@ Effect::Effect()
 {
 	flag = false;
 	renderer.LoadTexture("ring.png");
-	renderer.LoadTexture("explosion.jpg");
+	renderer.LoadTexture("explosion2.png");
 }
 
 Effect::~Effect()
@@ -45,12 +45,12 @@ void Effect::Explosion(Vector2  position, float t)//”š”­ring.png
 		flag = true;
 		img[13];
 		
-		LoadDivGraph("explosion.jpg", 13, 3, 5, 120, 120, img);
+		LoadDivGraph("explosion2.png", 13, 3, 5, 120, 120, img);
 	}
 	
 	count++;
 	int a = count/ (t * 60) ;
-	if (a < 14)DrawGraph(position.x - 60, position.y - 60, img[a], FALSE);
+	if (a < 14)DrawGraph(position.x - 60, position.y - 60, img[a], TRUE);
 	if (a >= 13)count = 10000;
 }
 

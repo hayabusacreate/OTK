@@ -24,9 +24,7 @@ void CountDownTimer::Init()
 
 void CountDownTimer::Update()
 {
-	//int i = GetNowCount();
 	currentTime = std::fmaxf(currentTime - 1.0f, 0.0f);
-	//currentTime++;
 }
 
 bool CountDownTimer::IsTime()
@@ -39,7 +37,6 @@ void CountDownTimer::SetTime(const float second)
 	limitTime = 60.0f * second;
 	Init();
 }
-
 
 float CountDownTimer::Rate()
 {

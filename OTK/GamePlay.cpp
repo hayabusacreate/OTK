@@ -34,10 +34,7 @@ GamePlay::GamePlay(ISceneChanger * changer)
 
 void GamePlay::Initialize()
 {
-	SoundHandle = LoadSoundMem("GamePlayBGM.mp3");
-	//音量調節(最大は255,パーセントをかける)
-	ChangeVolumeSoundMem(255 * 80 / 100, SoundHandle);
-	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	sound.PlayBGM("GamePlayBGM.mp3");
 
 	count = 0;
 
@@ -62,7 +59,8 @@ void GamePlay::Initialize()
 void GamePlay::Finalize()
 {
 	BaseScene::Finalize();
-	StopSoundMem(SoundHandle);
+	//StopSoundMem(SoundHandle);
+	sound.StopBGM("GamePlayBGM.mp3");
 }
 
 
@@ -80,7 +78,7 @@ void GamePlay::Update()
 	pActiont.Update(player.GetActionFlag(), enemy8.GetScore());
 	pActiont.Update(player.GetActionFlag(), enemy9.GetScore());
 	pActiont.Update(player.GetActionFlag(), enemy10.GetScore());
-	enemy.Move(player.GetPosition(), player.GetScale(),player.GetActionFlag());
+	enemy.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy2.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy3.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 	enemy4.Move(player.GetPosition(), player.GetScale(), player.GetActionFlag());
@@ -105,17 +103,17 @@ void GamePlay::Update()
 	goalblock3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 
 	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount() + goalblock3.GetBreakCount();
-	if (count == 3)
+	if (count == 3 || (CheckHitKey(KEY_INPUT_Q) == 1))
 	{
 		mSceneChanger->ChangeScene(eScene_Ending);
 	}
 
-	if (enemy.GetHitPlayer()||
-		enemy2.GetHitPlayer() || 
-		enemy3.GetHitPlayer() || 
-		enemy4.GetHitPlayer() || 
-		enemy5.GetHitPlayer() || 
-		enemy6.GetHitPlayer() || 
+	if (enemy.GetHitPlayer() ||
+		enemy2.GetHitPlayer() ||
+		enemy3.GetHitPlayer() ||
+		enemy4.GetHitPlayer() ||
+		enemy5.GetHitPlayer() ||
+		enemy6.GetHitPlayer() ||
 		enemy7.GetHitPlayer() ||
 		enemy8.GetHitPlayer() ||
 		enemy9.GetHitPlayer() ||
@@ -134,16 +132,16 @@ void GamePlay::Draw()
 	map.Draw();
 	pActiont.Draw(0, 0);
 	player.Draw();
-	enemy.Draw();
-	enemy2.Draw();
-	enemy3.Draw();
-	enemy4.Draw();
-	enemy5.Draw();
-	enemy6.Draw();
-	enemy7.Draw();
-	enemy8.Draw();
-	enemy9.Draw();
-	enemy10.Draw();
+	enemy.Draw(player.GetActionFlag());
+	enemy2.Draw(player.GetActionFlag());
+	enemy3.Draw(player.GetActionFlag());
+	enemy4.Draw(player.GetActionFlag());
+	enemy5.Draw(player.GetActionFlag());
+	enemy6.Draw(player.GetActionFlag());
+	enemy7.Draw(player.GetActionFlag());
+	enemy8.Draw(player.GetActionFlag());
+	enemy9.Draw(player.GetActionFlag());
+	enemy10.Draw(player.GetActionFlag());
 	goalblock.Draw();
 	goalblock2.Draw();
 	goalblock3.Draw();
