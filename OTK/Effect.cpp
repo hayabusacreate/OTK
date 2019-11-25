@@ -50,7 +50,12 @@ void Effect::Explosion(Vector2  position, float t)//”š”­ring.png
 	
 	count++;
 	int a = count/ (t * 60) ;
-	if (a < 14)DrawGraph(position.x - 60, position.y - 60, img[a], TRUE);
+	if (a < 14) 
+	{
+		SetDrawBright(134, 245, 253);
+		DrawGraph(position.x - 60, position.y - 60, img[a], TRUE);
+		SetDrawBright(255, 255, 255);
+	}
 	if (a >= 13)count = 10000;
 }
 
