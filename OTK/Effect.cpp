@@ -15,6 +15,7 @@ Effect::Effect()
 	flag = false;
 	renderer.LoadTexture("ring.png");
 	renderer.LoadTexture("explosion2.png");
+	renderer.LoadTexture("zangeki.png");
 }
 
 Effect::~Effect()
@@ -50,16 +51,24 @@ void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 	
 	count++;
 	int a = count/ (t * 60) ;
-	if (a < 14)DrawGraph(position.x - 60, position.y - 60, img[a], TRUE);
+	if (a < 14) 
+	{
+		SetDrawBright(134, 245, 253);
+		DrawGraph(position.x - 60, position.y - 60, img[a], TRUE);
+		SetDrawBright(255, 255, 255);
+	}
 	if (a >= 13)count = 10000;
 }
 
 void Effect::Trajectory(Vector2& position, float t)//ãOê’//bou.png
 {
+	//renderer.Draw("zangeki.png", position.x, position.y);
+	DrawGraph(position.x-128, position.y-128, LoadGraph("zangeki.png"), TRUE);
 }
 
 void Effect::Slashing(Vector2& position, float t)//éaåÇ
 {
+
 }
 
 void Effect::Trigger(Vector2& position, float t)//éûä‘í‚é~î≠ìÆ//giza.png
