@@ -41,7 +41,7 @@ void Player::Initialize()
 
 	IsActive = true;
 
-	SoundHandle = LoadSoundMem("ActionSE.mp3");
+	//SoundHandle = LoadSoundMem("ActionSE.mp3");
 }
 
 void Player::Update()
@@ -89,7 +89,7 @@ void Player::Move()
 	{
 		if ((pad & PAD_INPUT_B))
 		{
-			PlaySoundFile("", DX_PLAYTYPE_BACK);
+			//PlaySoundFile("", DX_PLAYTYPE_BACK);
 
 			PlayerDownSpeed -= JumpForce;
 			IsJumpFlag = true;
@@ -138,7 +138,8 @@ void Player::Action(bool IsActionFlag)
 				//ëOÉtÉåÅ[ÉÄÇ≈âüÇµÇƒÇ¢Ç»ÇØÇÍÇŒ
 				if (InputFlag == 0)
 				{
-					PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+					//PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+					sound.PlaySE("ActionSE.mp3");
 					ActionCount = 1;
 					radian = 0;
 				}

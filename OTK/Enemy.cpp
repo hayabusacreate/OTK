@@ -35,7 +35,7 @@ void Enemy::Initialize()
 	counts = false;
 	effect.Init();
 
-	SoundHandle = LoadSoundMem("Destroy.mp3");
+	//SoundHandle = LoadSoundMem("Destroy.mp3");
 }
 
 //移動
@@ -101,7 +101,8 @@ void Enemy::HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction)
 			if (IsActive == true)
 			{
 				//音楽、ゲージプラス、フラグを折る
-				PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+				//PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+				sound.PlaySE("Destroy.mp3");
 				Score = 30;
 				IsActive = false;
 			}

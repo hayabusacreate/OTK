@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "Sound.h"
 
 class GameOver
 	:public BaseScene
@@ -15,4 +16,5 @@ private:
 	int pad;
 	int InputMonitor;
 	int SoundHandle;
+	Sound sound;
 };

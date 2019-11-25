@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "Effect.h"
 #include "CountDownTimer.h"
+#include "Sound.h"
 
 //エネミークラス
 class Enemy
@@ -64,4 +65,5 @@ private:
 	bool counts;
 
 	int SoundHandle;
+	Sound sound;
 };

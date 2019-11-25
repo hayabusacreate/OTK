@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include <DxLib.h>
 #include "Map.h"
+#include "Sound.h"
 
 //プレイヤークラス
 class Player
@@ -79,4 +80,6 @@ private:
 	bool IsActive;//true:死んだ false:生きている
 
 	int SoundHandle;
+
+	Sound sound;
 };
