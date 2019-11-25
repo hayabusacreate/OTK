@@ -32,7 +32,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	scenemanager.Initialize();
 
 	// メインループ開始、ＥＳＣキーで外に出る
-	while (ProcessMessage() == 0/* && CheckHitKey(KEY_INPUT_ESCAPE) == 0*/)
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		// 画面のクリア
 		ClearDrawScreen();

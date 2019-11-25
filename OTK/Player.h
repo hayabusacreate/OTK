@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include <DxLib.h>
 #include "Map.h"
+#include "TimeStop.h"
 
 //プレイヤークラス
 class Player
@@ -18,9 +19,6 @@ public:
 
 	//更新
 	void Update();
-
-	//入力
-	void InputKey_PAD();
 
 	//移動
 	void Move();
@@ -79,4 +77,6 @@ private:
 	bool IsActive;//true:死んだ false:生きている
 
 	int SoundHandle;
+
+	TimeStop timestop;
 };

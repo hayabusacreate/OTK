@@ -25,7 +25,7 @@ public:
 	void HitPlayer(Vector2 PlayerPos, Vector2 PlayerScale, bool IsAction);
 
 	//•`‰æ
-	void Draw();
+	void Draw(bool IsAction);
 
 	//“–‚½‚è”»’è
 	int CheckMapMove(Vector2 pos, Vector2 velocity, Vector2 scale);

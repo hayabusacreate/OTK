@@ -42,6 +42,9 @@ void Player::Initialize()
 	IsActive = true;
 
 	SoundHandle = LoadSoundMem("ActionSE.mp3");
+
+
+	timestop.Initialize();
 }
 
 void Player::Update()
@@ -132,6 +135,8 @@ void Player::Action(bool IsActionFlag)
 		//通常状態
 		if (ActionCount == 0)
 		{
+			timestop.Shrink();
+
 			//&zキーが押されたら
 			if ((pad & PAD_INPUT_A))
 			{
@@ -154,7 +159,7 @@ void Player::Action(bool IsActionFlag)
 		//方向入力状態
 		else if (ActionCount == 1)
 		{
-			
+			timestop.Expansion();
 			//ジョイパッドのスティック入力取得
 			GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
 
@@ -165,7 +170,8 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					//PlaySoundFile("", DX_PLAYTYPE_BACK);
+					//timestop.Shrink();
+
 					ActionCount = 0;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -176,7 +182,6 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					//PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 2;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -204,6 +209,8 @@ void Player::Action(bool IsActionFlag)
 	else
 	{
 		ActionCount = 0;
+
+		timestop.Shrink();
 	}
 }
 
@@ -212,10 +219,12 @@ void Player::Draw()
 {
 	if (!IsActive) return;
 
+	timestop.Draw(_position);
+
 	//表示する画像の番号を変更
 	ImgIndex = count % 121;
 	ImgIndex /= 11;
-    //アニメーション描画
+	//アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex + (11 * AnimNum)], true);
 
 	if (ActionCount != 1)
