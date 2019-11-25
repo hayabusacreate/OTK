@@ -3,6 +3,7 @@
 #include "BaseScene.h"
 #include "ISceneChanger.h"
 #include "Effect.h"
+#include "Sound.h"
 
 //ƒQ[ƒ€‰æ–ÊƒNƒ‰ƒX
 class GamePlay
@@ -19,4 +20,5 @@ public:
 private:
 	int count;
 	int SoundHandle;
+	Sound sound;
 };

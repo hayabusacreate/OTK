@@ -7,23 +7,25 @@ Ending::Ending(ISceneChanger* changer) : BaseScene(changer)
 
 void Ending::Initialize()
 {
-	mImageHandle = LoadGraph("clear.png");
-	SoundHandle = LoadSoundMem("GameClear.mp3");
-	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	//mImageHandle = LoadGraph("clear.png");
+	//SoundHandle = LoadSoundMem("GameClear.mp3");
+	//PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	sound.PlayBGM("GameClear.mp3");
 	InputMonitor = 0;
 }
 
 void Ending::Finalize()
 {
 	BaseScene::Finalize();
-	StopSoundMem(SoundHandle);
+	//StopSoundMem(SoundHandle);
+	sound.StopBGM("GameClear.mp3");
 }
 
 void Ending::Update()
 {
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
-	if (pad & PAD_INPUT_B)
+	if ((pad & PAD_INPUT_B) || (CheckHitKey(KEY_INPUT_W) == 1))
 	{ 
 		if (InputMonitor == 0)
 		{

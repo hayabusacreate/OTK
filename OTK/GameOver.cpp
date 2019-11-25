@@ -8,15 +8,17 @@ GameOver::GameOver(ISceneChanger* changer) : BaseScene(changer)
 void GameOver::Initialize()
 {
 	mImageHandle = LoadGraph("over.png");
-	SoundHandle = LoadSoundMem("GameOver.mp3");
-	PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	//SoundHandle = LoadSoundMem("GameOver.mp3");
+	//PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
+	sound.PlayBGM("GameOver.mp3");
 	InputMonitor = 0;
 }
 
 void GameOver::Finalize()
 {
 	BaseScene::Finalize();
-	StopSoundMem(SoundHandle);
+	//StopSoundMem(SoundHandle);
+	sound.StopBGM("GameOver.mp3");
 }
 
 void GameOver::Update()

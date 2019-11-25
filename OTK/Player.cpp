@@ -41,10 +41,7 @@ void Player::Initialize()
 
 	IsActive = true;
 
-	SoundHandle = LoadSoundMem("ActionSE.mp3");
-
-
-	timestop.Initialize();
+	//SoundHandle = LoadSoundMem("ActionSE.mp3");
 }
 
 void Player::Update()
@@ -92,7 +89,7 @@ void Player::Move()
 	{
 		if ((pad & PAD_INPUT_B))
 		{
-			PlaySoundFile("", DX_PLAYTYPE_BACK);
+			//PlaySoundFile("", DX_PLAYTYPE_BACK);
 
 			PlayerDownSpeed -= JumpForce;
 			IsJumpFlag = true;
@@ -135,15 +132,14 @@ void Player::Action(bool IsActionFlag)
 		//通常状態
 		if (ActionCount == 0)
 		{
-			timestop.Shrink();
-
 			//&zキーが押されたら
 			if ((pad & PAD_INPUT_A))
 			{
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+					//PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK);
+					sound.PlaySE("ActionSE.mp3");
 					ActionCount = 1;
 					radian = 0;
 				}
@@ -159,7 +155,7 @@ void Player::Action(bool IsActionFlag)
 		//方向入力状態
 		else if (ActionCount == 1)
 		{
-			timestop.Expansion();
+			
 			//ジョイパッドのスティック入力取得
 			GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
 
@@ -170,8 +166,7 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
-					//timestop.Shrink();
-
+					//PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 0;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -182,6 +177,7 @@ void Player::Action(bool IsActionFlag)
 				//前フレームで押していなければ
 				if (InputFlag == 0)
 				{
+					//PlaySoundFile("", DX_PLAYTYPE_BACK);
 					ActionCount = 2;
 				}
 				//前フレームでボタンが押されたかをtrueにする
@@ -209,8 +205,6 @@ void Player::Action(bool IsActionFlag)
 	else
 	{
 		ActionCount = 0;
-
-		timestop.Shrink();
 	}
 }
 
@@ -219,12 +213,10 @@ void Player::Draw()
 {
 	if (!IsActive) return;
 
-	timestop.Draw(_position);
-
 	//表示する画像の番号を変更
 	ImgIndex = count % 121;
 	ImgIndex /= 11;
-	//アニメーション描画
+    //アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex + (11 * AnimNum)], true);
 
 	if (ActionCount != 1)
