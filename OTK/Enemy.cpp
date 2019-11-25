@@ -41,6 +41,7 @@ void Enemy::Initialize()
 //移動
 void Enemy::Move(Vector2 PlayerPos, Vector2 PlayerSca, bool IsAction)
 {
+	if (IsAction)return;
 	if (counts)return;
 	if (!IsActive && !t)
 	{
@@ -129,8 +130,6 @@ void Enemy::Draw(bool IsAction)
 {
 	if (counts) return;
 
-	if (t)effect.Explosion(_position, 0.1f);
-
 	//敵の画像描画
 	//表示する画像の番号を変更
 	if (!IsAction)
@@ -143,6 +142,8 @@ void Enemy::Draw(bool IsAction)
 	//アニメーション描画
 	DrawGraph(_position.x - _scale.x * 0.5f, _position.y - _scale.y * 0.5f, anime[ImgIndex], true);
 	//カウントを増やす
+	if (!IsActive&& IsAction)effect.Trajectory(_position, 0);
+	if (t)effect.Explosion(_position, 0.1f);
 }
 
 //マップとの当たり判定

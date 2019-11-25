@@ -15,6 +15,7 @@ Effect::Effect()
 	flag = false;
 	renderer.LoadTexture("ring.png");
 	renderer.LoadTexture("explosion2.png");
+	renderer.LoadTexture("zangeki.png");
 }
 
 Effect::~Effect()
@@ -61,10 +62,13 @@ void Effect::Explosion(Vector2  position, float t)//îöî≠ring.png
 
 void Effect::Trajectory(Vector2& position, float t)//ãOê’//bou.png
 {
+	//renderer.Draw("zangeki.png", position.x, position.y);
+	DrawGraph(position.x-128, position.y-128, LoadGraph("zangeki.png"), TRUE);
 }
 
 void Effect::Slashing(Vector2& position, float t)//éaåÇ
 {
+
 }
 
 void Effect::Trigger(Vector2& position, float t)//éûä‘í‚é~î≠ìÆ//giza.png
