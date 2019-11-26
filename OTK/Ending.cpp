@@ -22,7 +22,7 @@ void Ending::Update()
 {
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
-	if ((pad & PAD_INPUT_B) || (CheckHitKey(KEY_INPUT_W) == 1))
+	if ((pad & PAD_INPUT_B))
 	{
 		if (InputMonitor == 0)
 		{
@@ -39,6 +39,4 @@ void Ending::Update()
 void Ending::Draw()
 {
 	BaseScene::Draw();//親クラスの描画メソッドを呼ぶ
-	DrawString(0, 0, "エンディング画面です。", GetColor(255, 255, 255));
-	DrawString(0, 20, "Bボタンを押すとタイトルに進みます。", GetColor(255, 255, 255));
 }

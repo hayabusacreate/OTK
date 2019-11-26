@@ -59,7 +59,6 @@ void GamePlay::Initialize()
 void GamePlay::Finalize()
 {
 	BaseScene::Finalize();
-	//StopSoundMem(SoundHandle);
 	sound.StopBGM("GamePlayBGM.mp3");
 }
 
@@ -103,7 +102,7 @@ void GamePlay::Update()
 	goalblock3.HitPlayer(player.GetPosition(), player.GetScale(), player.GetActionFlag());
 
 	count = goalblock.GetBreakCount() + goalblock2.GetBreakCount() + goalblock3.GetBreakCount();
-	if (count == 3 || (CheckHitKey(KEY_INPUT_Q) == 1))
+	if (count == 3)
 	{
 		mSceneChanger->ChangeScene(eScene_Ending);
 	}

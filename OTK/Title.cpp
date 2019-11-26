@@ -11,8 +11,6 @@ void Title::Initialize()
 {
 	mImageHandle = LoadGraph("title.png");    //画像のロード
 	InputMonitor = 0;
-	//SoundHandle = LoadSoundMem("Title.mp3");
-	//PlaySoundMem(SoundHandle, DX_PLAYTYPE_LOOP);
 	sound.PlayBGM("Title.mp3");
 
 }
@@ -20,7 +18,6 @@ void Title::Initialize()
 void Title::Finalize()
 {
 	BaseScene::Finalize();
-	//StopSoundMem(SoundHandle);
 	sound.StopBGM("Title.mp3");
 }
 
@@ -30,8 +27,7 @@ void Title::Update()
 
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
-	//if (pad & PAD_INPUT_B)//KEY_INPUT_Q  CheckHitKey( KEY_INPUT_Z ) == 0 
-	if ((pad & PAD_INPUT_B) || (CheckHitKey(KEY_INPUT_Q) == 1))
+	if ((pad & PAD_INPUT_B))
 	{
 		if (InputMonitor == 0)
 		{
@@ -50,6 +46,4 @@ void Title::Update()
 void Title::Draw()
 {
 	BaseScene::Draw();//親クラスの描画メソッドを呼ぶ
-	DrawString(0, 0, "タイトル画面です。", GetColor(255, 255, 255));
-	DrawString(0, 20, "Bボタンを押すとゲーム画面に戻ります。", GetColor(255, 255, 255));
 }
